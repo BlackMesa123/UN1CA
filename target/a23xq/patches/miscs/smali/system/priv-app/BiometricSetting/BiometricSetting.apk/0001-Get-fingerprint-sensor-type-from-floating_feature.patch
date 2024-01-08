@@ -1,0 +1,40 @@
+From b8ca5347488b42277fa7e252cb5df2d60215bea4 Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Mon, 27 Nov 2023 21:32:39 +0100
+Subject: [PATCH] Get fingerprint sensor type from floating_feature
+
+---
+ .../biometrics/app/setting/Utils$Config.smali    | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/smali/com/samsung/android/biometrics/app/setting/Utils$Config.smali b/smali/com/samsung/android/biometrics/app/setting/Utils$Config.smali
+index bc55408..19ec152 100644
+--- a/smali/com/samsung/android/biometrics/app/setting/Utils$Config.smali
++++ b/smali/com/samsung/android/biometrics/app/setting/Utils$Config.smali
+@@ -148,9 +148,21 @@
+ 
+     move-result-object v3
+ 
+-    sput-boolean v1, Lcom/samsung/android/biometrics/app/setting/Utils$Config;->FP_FEATURE_SENSOR_IS_IN_DISPLAY_TYPE:Z
++    const-string v4, "display"
+ 
+-    sput-boolean v1, Lcom/samsung/android/biometrics/app/setting/Utils$Config;->FP_FEATURE_SENSOR_IS_ULTRASONIC:Z
++    invoke-virtual {v3, v4}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
++
++    move-result v4
++
++    sput-boolean v4, Lcom/samsung/android/biometrics/app/setting/Utils$Config;->FP_FEATURE_SENSOR_IS_IN_DISPLAY_TYPE:Z
++
++    const-string v4, "ultrasonic"
++
++    invoke-virtual {v3, v4}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
++
++    move-result v4
++
++    sput-boolean v4, Lcom/samsung/android/biometrics/app/setting/Utils$Config;->FP_FEATURE_SENSOR_IS_ULTRASONIC:Z
+ 
+     const-string v4, "optical"
+ 
+-- 
+2.43.0
+

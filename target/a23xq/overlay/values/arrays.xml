@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="config_HysteresisBrightInputLux">
+        <item>0</item>
+        <item>8</item>
+        <item>15</item>
+        <item>30</item>
+        <item>50</item>
+        <item>70</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>500</item>
+        <item>700</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+    </integer-array>
+    <integer-array name="config_HysteresisBrightOutputLux">
+        <item>8</item>
+        <item>70</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>300</item>
+        <item>500</item>
+        <item>700</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>2000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+        <item>4000</item>
+    </integer-array>
+    <integer-array name="config_HysteresisDarkInputLux">
+        <item>0</item>
+        <item>8</item>
+        <item>15</item>
+        <item>30</item>
+        <item>50</item>
+        <item>70</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>500</item>
+        <item>700</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+    </integer-array>
+    <integer-array name="config_HysteresisDarkOutputLux">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>8</item>
+        <item>8</item>
+        <item>30</item>
+        <item>30</item>
+        <item>50</item>
+        <item>50</item>
+        <item>70</item>
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+        <item>2000</item>
+        <item>3000</item>
+    </integer-array>
+    <integer-array name="config_autoBrightnessLcdBacklightValues">
+        <item>7</item>
+        <item>34</item>
+        <item>50</item>
+        <item>70</item>
+        <item>73</item>
+        <item>75</item>
+        <item>78</item>
+        <item>81</item>
+        <item>85</item>
+        <item>95</item>
+        <item>108</item>
+        <item>129</item>
+        <item>194</item>
+        <item>255</item>
+        <item>306</item>
+    </integer-array>
+    <integer-array name="config_autoBrightnessLevels">
+        <item>8</item>
+        <item>15</item>
+        <item>30</item>
+        <item>50</item>
+        <item>70</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>500</item>
+        <item>700</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+    </integer-array>
+    <string-array name="config_mobile_hotspot_provision_app">
+        <item>com.samsung.unifiedtp</item>
+        <item>com.samsung.unifiedtp.ui.TetheringProvisionActivity</item>
+    </string-array>
+</resources>

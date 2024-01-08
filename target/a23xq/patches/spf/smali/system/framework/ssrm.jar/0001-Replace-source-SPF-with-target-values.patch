@@ -1,0 +1,48 @@
+From 9b12032f54c032f3f6f01af35fba6c9b71d04b19 Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Thu, 30 Nov 2023 10:57:34 +0100
+Subject: [PATCH] Replace source SPF with target values
+
+---
+ smali/com/android/server/ssrm/Feature.smali    | 4 ++--
+ smali/com/android/server/ssrm/PreMonitor.smali | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/smali/com/android/server/ssrm/Feature.smali b/smali/com/android/server/ssrm/Feature.smali
+index 4428f87..fb2652d 100644
+--- a/smali/com/android/server/ssrm/Feature.smali
++++ b/smali/com/android/server/ssrm/Feature.smali
+@@ -324,7 +324,7 @@
+ 
+     if-eqz v6, :cond_1
+ 
+-    const-string v6, "siop_dm1q_sm8550"
++    const-string v6, "siop_a23xq_sm6375"
+ 
+     sput-object v6, Lcom/android/server/ssrm/Feature;->SSRM_FILENAME:Ljava/lang/String;
+ 
+@@ -354,7 +354,7 @@
+     :goto_1
+     sput-boolean v0, Lcom/android/server/ssrm/Feature;->DISABLE_HEAVYUSER:Z
+ 
+-    const-string v0, "dvfs_policy_default"
++    const-string v0, "dvfs_policy_sm6375_xx"
+ 
+     sput-object v0, Lcom/android/server/ssrm/Feature;->DVFS_FILENAME:Ljava/lang/String;
+ 
+diff --git a/smali/com/android/server/ssrm/PreMonitor.smali b/smali/com/android/server/ssrm/PreMonitor.smali
+index 273cc52..6fe2f71 100644
+--- a/smali/com/android/server/ssrm/PreMonitor.smali
++++ b/smali/com/android/server/ssrm/PreMonitor.smali
+@@ -571,7 +571,7 @@
+ 
+     const-string v1, "4"
+ 
+-    const-string v2, "5"
++    const-string v2, "3"
+ 
+     invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
+-- 
+2.43.0
+

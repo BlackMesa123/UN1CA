@@ -1,0 +1,81 @@
+From d6830143ea287f69c049dea7490d61e4e5e19ef1 Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Sun, 17 Dec 2023 12:22:42 +0100
+Subject: [PATCH] Replace source SPF with target values
+
+---
+ smali/com/android/server/audio/AudioService.smali               | 2 +-
+ .../biometrics/sensors/fingerprint/FingerprintUtils.smali       | 2 +-
+ .../android/hardware/display/SemMdnieManagerService.smali       | 2 +-
+ .../com/android/server/enterprise/hdm/HdmVendorController.smali | 2 +-
+ smali_classes3/com/android/server/power/PowerManagerUtil.smali  | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/smali/com/android/server/audio/AudioService.smali b/smali/com/android/server/audio/AudioService.smali
+index 3969eea3..ccd35389 100644
+--- a/smali/com/android/server/audio/AudioService.smali
++++ b/smali/com/android/server/audio/AudioService.smali
+@@ -4562,7 +4562,7 @@
+ 
+     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->print(Ljava/lang/String;)V
+ 
+-    const/4 v0, 0x1
++    const/4 v0, 0x0
+ 
+     invoke-virtual {p1, v0}, Ljava/io/PrintWriter;->println(Z)V
+ 
+diff --git a/smali/com/android/server/biometrics/sensors/fingerprint/FingerprintUtils.smali b/smali/com/android/server/biometrics/sensors/fingerprint/FingerprintUtils.smali
+index 484cd1a5..1803de9c 100644
+--- a/smali/com/android/server/biometrics/sensors/fingerprint/FingerprintUtils.smali
++++ b/smali/com/android/server/biometrics/sensors/fingerprint/FingerprintUtils.smali
+@@ -442,7 +442,7 @@
+ .method public static semGetMaxTemplateNumberFromSPF()I
+     .locals 6
+ 
+-    const-string v0, "google_touch_display_ultrasonic"
++    const-string v0, "google_touch_side,settings=3,navi=1"
+ 
+     const-string v1, ","
+ 
+diff --git a/smali/com/samsung/android/hardware/display/SemMdnieManagerService.smali b/smali/com/samsung/android/hardware/display/SemMdnieManagerService.smali
+index ed39a90f..1a1661df 100644
+--- a/smali/com/samsung/android/hardware/display/SemMdnieManagerService.smali
++++ b/smali/com/samsung/android/hardware/display/SemMdnieManagerService.smali
+@@ -703,7 +703,7 @@
+ 
+     iput-object v12, v0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mLock:Ljava/lang/Object;
+ 
+-    const-string v12, "65303"
++    const-string v12, "0"
+ 
+     invoke-static {v12}, Ljava/lang/Integer;->valueOf(Ljava/lang/String;)Ljava/lang/Integer;
+ 
+diff --git a/smali_classes2/com/android/server/enterprise/hdm/HdmVendorController.smali b/smali_classes2/com/android/server/enterprise/hdm/HdmVendorController.smali
+index 8f57af8e..2b5d17ad 100644
+--- a/smali_classes2/com/android/server/enterprise/hdm/HdmVendorController.smali
++++ b/smali_classes2/com/android/server/enterprise/hdm/HdmVendorController.smali
+@@ -13,7 +13,7 @@
+ 
+     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+ 
+-    const-string v0, "33"
++    const-string v0, "30"
+ 
+     invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+diff --git a/smali_classes3/com/android/server/power/PowerManagerUtil.smali b/smali_classes3/com/android/server/power/PowerManagerUtil.smali
+index f1163443..502868b2 100644
+--- a/smali_classes3/com/android/server/power/PowerManagerUtil.smali
++++ b/smali_classes3/com/android/server/power/PowerManagerUtil.smali
+@@ -845,7 +845,7 @@
+ 
+     sput-boolean v11, Lcom/android/server/power/PowerManagerUtil;->SEC_FEATURE_HQM_SEND_LBHD_HIGHEST:Z
+ 
+-    const/4 v0, 0x1
++    const/4 v0, 0x0
+ 
+     sput-boolean v0, Lcom/android/server/power/PowerManagerUtil;->SECURITY_FINGERPRINT_IN_DISPLAY:Z
+ 
+-- 
+2.43.0
+

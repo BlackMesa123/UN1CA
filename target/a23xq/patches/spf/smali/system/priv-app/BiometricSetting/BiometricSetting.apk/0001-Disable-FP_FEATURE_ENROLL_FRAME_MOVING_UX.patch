@@ -1,0 +1,25 @@
+From 0d54f774b03651386bf108876e1b0049a70c95ad Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Sat, 2 Dec 2023 15:50:24 +0100
+Subject: [PATCH] Disable FP_FEATURE_ENROLL_FRAME_MOVING_UX
+
+---
+ .../samsung/android/biometrics/app/setting/Utils$Config.smali   | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/smali/com/samsung/android/biometrics/app/setting/Utils$Config.smali b/smali/com/samsung/android/biometrics/app/setting/Utils$Config.smali
+index bc55408..0278621 100644
+--- a/smali/com/samsung/android/biometrics/app/setting/Utils$Config.smali
++++ b/smali/com/samsung/android/biometrics/app/setting/Utils$Config.smali
+@@ -222,7 +222,7 @@
+ 
+     sput-boolean v0, Lcom/samsung/android/biometrics/app/setting/Utils$Config;->FP_FEATURE_TSP_BLOCK:Z
+ 
+-    sput-boolean v1, Lcom/samsung/android/biometrics/app/setting/Utils$Config;->FP_FEATURE_ENROLL_FRAME_MOVING_UX:Z
++    sput-boolean v2, Lcom/samsung/android/biometrics/app/setting/Utils$Config;->FP_FEATURE_ENROLL_FRAME_MOVING_UX:Z
+ 
+     invoke-static {}, Lcom/samsung/android/feature/SemFloatingFeature;->getInstance()Lcom/samsung/android/feature/SemFloatingFeature;
+ 
+-- 
+2.43.0
+

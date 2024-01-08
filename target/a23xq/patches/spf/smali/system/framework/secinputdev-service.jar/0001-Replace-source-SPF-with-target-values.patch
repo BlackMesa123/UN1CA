@@ -1,0 +1,25 @@
+From 58c934aebace198aac570147df41a87f45523070 Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Wed, 29 Nov 2023 00:59:40 +0100
+Subject: [PATCH] Replace source SPF with target values
+
+---
+ .../hardware/secinputdev/SemInputDeviceManagerService.smali     | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/smali/com/samsung/android/hardware/secinputdev/SemInputDeviceManagerService.smali b/smali/com/samsung/android/hardware/secinputdev/SemInputDeviceManagerService.smali
+index 6ce9569..9b9ece6 100644
+--- a/smali/com/samsung/android/hardware/secinputdev/SemInputDeviceManagerService.smali
++++ b/smali/com/samsung/android/hardware/secinputdev/SemInputDeviceManagerService.smali
+@@ -1454,7 +1454,7 @@
+     goto :goto_0
+ 
+     :cond_1
+-    const-string v0, "2"
++    const-string v0, "1"
+ 
+     invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+-- 
+2.43.0
+

@@ -1,0 +1,25 @@
+From 332f997e1b41945532028bb803c4c8f3303aca5c Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Mon, 27 Nov 2023 21:58:41 +0100
+Subject: [PATCH] Enable FP_FEATURE_GESTURE_MODE
+
+---
+ smali/com/android/server/biometrics/SemBiometricFeature.smali | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/smali/com/android/server/biometrics/SemBiometricFeature.smali b/smali/com/android/server/biometrics/SemBiometricFeature.smali
+index c233d577..f0e3dc43 100644
+--- a/smali/com/android/server/biometrics/SemBiometricFeature.smali
++++ b/smali/com/android/server/biometrics/SemBiometricFeature.smali
+@@ -239,7 +239,7 @@
+ 
+     sput-boolean v5, Lcom/android/server/biometrics/SemBiometricFeature;->FP_FEATURE_SENSOR_IS_SIDE:Z
+ 
+-    sput-boolean v4, Lcom/android/server/biometrics/SemBiometricFeature;->FP_FEATURE_GESTURE_MODE:Z
++    sput-boolean v3, Lcom/android/server/biometrics/SemBiometricFeature;->FP_FEATURE_GESTURE_MODE:Z
+ 
+     sput-boolean v4, Lcom/android/server/biometrics/SemBiometricFeature;->FP_FEATURE_SUPPORT_GESTURE_CALIBRATION:Z
+ 
+-- 
+2.43.0
+

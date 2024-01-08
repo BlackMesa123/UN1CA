@@ -1,0 +1,719 @@
+From ee4f48bb29f462c47cea225c1b04addcd075f735 Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Wed, 29 Nov 2023 21:10:41 +0100
+Subject: [PATCH] Replace source SPF with target values
+
+---
+ .../server/wifi/SemFrameworkFacade.smali      |   8 +-
+ .../server/wifi/SemWifiCoexManager.smali      | 326 +++++++++---------
+ 2 files changed, 167 insertions(+), 167 deletions(-)
+
+diff --git a/smali/com/samsung/android/server/wifi/SemFrameworkFacade.smali b/smali/com/samsung/android/server/wifi/SemFrameworkFacade.smali
+index 27cf0d6..edcffea 100644
+--- a/smali/com/samsung/android/server/wifi/SemFrameworkFacade.smali
++++ b/smali/com/samsung/android/server/wifi/SemFrameworkFacade.smali
+@@ -195,7 +195,9 @@
+ 
+     div-int/lit8 v0, v0, 0x8
+ 
+-    invoke-static {p0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
++    const-string v1, "100"
++
++    invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+     move-result v1
+ 
+@@ -1074,7 +1076,7 @@
+ .method public isSupportMobileAp6G()Z
+     .locals 0
+ 
+-    const/4 p0, 0x1
++    const/4 p0, 0x0
+ 
+     return p0
+ .end method
+@@ -1289,7 +1291,7 @@
+ .method public isWifiToCellularSupported()Z
+     .locals 0
+ 
+-    const/4 p0, 0x1
++    const/4 p0, 0x0
+ 
+     return p0
+ .end method
+diff --git a/smali/com/samsung/android/server/wifi/SemWifiCoexManager.smali b/smali/com/samsung/android/server/wifi/SemWifiCoexManager.smali
+index c9947d9..084c4d1 100644
+--- a/smali/com/samsung/android/server/wifi/SemWifiCoexManager.smali
++++ b/smali/com/samsung/android/server/wifi/SemWifiCoexManager.smali
+@@ -13,7 +13,7 @@
+ 
+ 
+ # static fields
+-.field private static final CUSTOM_BACKOFF_TYPE:Ljava/lang/String; = "CAM_FRONT -1 -1 -1 -1 12 8 CAM_BACK -1 -1 -1 -1 12 8"
++.field private static final CUSTOM_BACKOFF_TYPE:Ljava/lang/String; = ""
+ 
+ .field private static final DBG:Z
+ 
+@@ -308,89 +308,89 @@
+ 
+     iput-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    const-string v0, "-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
++    const-string v1, "-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
+ 
+-    iput-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCUSTOM_BACKOFF_DISABLE:Ljava/lang/String;
++    iput-object v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCUSTOM_BACKOFF_DISABLE:Ljava/lang/String;
+ 
+-    iput-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mPreBackOff:Ljava/lang/String;
++    iput-object v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mPreBackOff:Ljava/lang/String;
+ 
+-    const/16 v0, 0x18
++    const/16 v1, 0x18
+ 
+-    new-array v0, v0, [Ljava/lang/String;
++    new-array v1, v1, [Ljava/lang/String;
+ 
+-    iput-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
++    iput-object v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    const/16 v0, 0x157c
++    const/16 v1, 0x157c
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->infStartFreqMhz:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->infStartFreqMhz:I
+ 
+-    const/16 v0, 0x16fd
++    const/16 v1, 0x16fd
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->infEndFreqMhz:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->infEndFreqMhz:I
+ 
+-    const/4 v0, 0x0
++    const/4 v1, 0x0
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->uwbCxStart5gCh:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->uwbCxStart5gCh:I
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->uwbCxEnd5gCh:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->uwbCxEnd5gCh:I
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mStaFreq:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mStaFreq:I
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mP2pFreq:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mP2pFreq:I
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mSApFreq:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mSApFreq:I
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mWifiApState:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mWifiApState:I
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUwbCh:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUwbCh:I
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsUwbCxEnabled:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsUwbCxEnabled:Z
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsUwbBackoffDefined:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsUwbBackoffDefined:Z
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsUwbCxfor5GhzDefined:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsUwbCxfor5GhzDefined:Z
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsCamFrontBackoffDefined:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsCamFrontBackoffDefined:Z
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsCamBackBackoffDefined:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsCamBackBackoffDefined:Z
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUwbBackoffEnable:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUwbBackoffEnable:Z
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCamFrontBackoffEnable:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCamFrontBackoffEnable:Z
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCamBackBackoffEnable:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCamBackBackoffEnable:Z
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->isCameraRunning:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->isCameraRunning:Z
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mLteuState:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mLteuState:I
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mLteuEnable:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mLteuEnable:I
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mScellEnter:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mScellEnter:Z
+ 
+-    iput-boolean v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->lastScellEnter:Z
++    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->lastScellEnter:Z
+ 
+-    const/4 v1, 0x1
++    const/4 v2, 0x1
+ 
+-    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->LTEU_MOBILEHOTSPOT_5GHZ_ENABLED:I
++    iput v2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->LTEU_MOBILEHOTSPOT_5GHZ_ENABLED:I
+ 
+-    const/4 v2, 0x2
++    const/4 v3, 0x2
+ 
+-    iput v2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->LTEU_P2P_5GHZ_CONNECTED:I
++    iput v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->LTEU_P2P_5GHZ_CONNECTED:I
+ 
+-    const/4 v2, 0x4
++    const/4 v3, 0x4
+ 
+-    iput v2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->LTEU_STA_5GHZ_CONNECTED:I
++    iput v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->LTEU_STA_5GHZ_CONNECTED:I
+ 
+-    const/4 v2, -0x1
++    const/4 v3, -0x1
+ 
+-    iput v2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->laaEnterState:I
++    iput v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->laaEnterState:I
+ 
+-    iput v2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->laaActiveState:I
++    iput v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->laaActiveState:I
+ 
+-    const-string v2, "SemWifiCoexManager"
++    const-string v3, "SemWifiCoexManager"
+ 
+-    invoke-static {v2, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
++    invoke-static {v3, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+ 
+     iput-object p1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mContext:Landroid/content/Context;
+ 
+@@ -426,70 +426,68 @@
+ 
+     if-eqz p2, :cond_0
+ 
+-    const-string p2, "CUSTOM_BACKOFF_TYPE = CAM_FRONT -1 -1 -1 -1 12 8 CAM_BACK -1 -1 -1 -1 12 8"
++    const-string p2, "CUSTOM_BACKOFF_TYPE = "
+ 
+-    invoke-static {v2, p2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
++    invoke-static {v3, p2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+ 
+     :cond_0
+-    const-string p2, "CAM_FRONT -1 -1 -1 -1 12 8 CAM_BACK -1 -1 -1 -1 12 8"
+-
+-    invoke-static {p2}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
++    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+ 
+-    move-result p3
++    move-result p2
+ 
+-    if-nez p3, :cond_8
++    if-nez p2, :cond_8
+ 
+-    const-string p3, " "
++    const-string p2, " "
+ 
+-    invoke-virtual {p2, p3}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
++    invoke-virtual {v0, p2}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+ 
+-    move-result-object p2
++    move-result-object p3
+ 
+-    iput-object p2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
++    iput-object p3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    move p2, v0
++    move p3, v1
+ 
+     :goto_0
+     iget-object p4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    array-length v3, p4
++    array-length v0, p4
+ 
+-    if-ge p2, v3, :cond_8
++    if-ge p3, v0, :cond_8
+ 
+-    const-string v3, "UWB"
++    const-string v0, "UWB"
+ 
+-    aget-object p4, p4, p2
++    aget-object p4, p4, p3
+ 
+-    invoke-virtual {v3, p4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++    invoke-virtual {v0, p4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
+     move-result p4
+ 
+     if-eqz p4, :cond_2
+ 
+-    add-int/lit8 p4, p2, 0x6
++    add-int/lit8 p4, p3, 0x6
+ 
+     :goto_1
+-    add-int/2addr p2, v1
++    add-int/2addr p3, v2
+ 
+-    if-ge p2, p4, :cond_1
++    if-ge p3, p4, :cond_1
+ 
+-    new-instance v3, Ljava/lang/StringBuilder;
++    new-instance v0, Ljava/lang/StringBuilder;
+ 
+-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
++    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+ 
+     iget-object v4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     iget-object v4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    aget-object v4, v4, p2
++    aget-object v4, v4, p3
+ 
+-    invoke-static {v3, v4, p3}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
++    invoke-static {v0, v4, p2}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+ 
+-    move-result-object v3
++    move-result-object v0
+ 
+-    iput-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
++    iput-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+     goto :goto_1
+ 
+@@ -498,15 +496,15 @@
+ 
+     invoke-direct {p4}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    aget-object v3, v3, p2
++    aget-object v0, v0, p3
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     invoke-virtual {p4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+@@ -518,15 +516,15 @@
+ 
+     invoke-direct {p4}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    invoke-virtual {p4, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     invoke-virtual {p4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+@@ -534,7 +532,7 @@
+ 
+     iput-object p4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsUwbBackoffDefined:Z
++    iput-boolean v2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsUwbBackoffDefined:Z
+ 
+     sget-boolean p4, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->DBG:Z
+ 
+@@ -542,53 +540,53 @@
+ 
+     new-instance p4, Ljava/lang/StringBuilder;
+ 
+-    const-string v3, "UWB Backoff is defined as "
++    const-string v0, "UWB Backoff is defined as "
+ 
+-    invoke-direct {p4, v3}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
++    invoke-direct {p4, v0}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mUWB_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-static {p4, v3, v2}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)V
++    invoke-static {p4, v0, v3}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)V
+ 
+     goto/16 :goto_4
+ 
+     :cond_2
+     iget-object p4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    aget-object p4, p4, p2
++    aget-object p4, p4, p3
+ 
+-    const-string v3, "CAM_FRONT"
++    const-string v0, "CAM_FRONT"
+ 
+-    invoke-virtual {v3, p4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++    invoke-virtual {v0, p4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
+     move-result p4
+ 
+     if-eqz p4, :cond_4
+ 
+-    add-int/lit8 p4, p2, 0x6
++    add-int/lit8 p4, p3, 0x6
+ 
+     :goto_2
+-    add-int/2addr p2, v1
++    add-int/2addr p3, v2
+ 
+-    if-ge p2, p4, :cond_3
++    if-ge p3, p4, :cond_3
+ 
+-    new-instance v3, Ljava/lang/StringBuilder;
++    new-instance v0, Ljava/lang/StringBuilder;
+ 
+-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
++    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+ 
+     iget-object v4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     iget-object v4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    aget-object v4, v4, p2
++    aget-object v4, v4, p3
+ 
+-    invoke-static {v3, v4, p3}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
++    invoke-static {v0, v4, p2}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+ 
+-    move-result-object v3
++    move-result-object v0
+ 
+-    iput-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
++    iput-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+     goto :goto_2
+ 
+@@ -597,15 +595,15 @@
+ 
+     invoke-direct {p4}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    aget-object v3, v3, p2
++    aget-object v0, v0, p3
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     invoke-virtual {p4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+@@ -617,15 +615,15 @@
+ 
+     invoke-direct {p4}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    invoke-virtual {p4, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     invoke-virtual {p4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+@@ -633,7 +631,7 @@
+ 
+     iput-object p4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsCamFrontBackoffDefined:Z
++    iput-boolean v2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsCamFrontBackoffDefined:Z
+ 
+     sget-boolean p4, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->DBG:Z
+ 
+@@ -641,53 +639,53 @@
+ 
+     new-instance p4, Ljava/lang/StringBuilder;
+ 
+-    const-string v3, "CAM_F Backoff is defined as "
++    const-string v0, "CAM_F Backoff is defined as "
+ 
+-    invoke-direct {p4, v3}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
++    invoke-direct {p4, v0}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_FRONT_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-static {p4, v3, v2}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)V
++    invoke-static {p4, v0, v3}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)V
+ 
+     goto/16 :goto_4
+ 
+     :cond_4
+     iget-object p4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    aget-object p4, p4, p2
++    aget-object p4, p4, p3
+ 
+-    const-string v3, "CAM_BACK"
++    const-string v0, "CAM_BACK"
+ 
+-    invoke-virtual {v3, p4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++    invoke-virtual {v0, p4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
+     move-result p4
+ 
+     if-eqz p4, :cond_6
+ 
+-    add-int/lit8 p4, p2, 0x6
++    add-int/lit8 p4, p3, 0x6
+ 
+     :goto_3
+-    add-int/2addr p2, v1
++    add-int/2addr p3, v2
+ 
+-    if-ge p2, p4, :cond_5
++    if-ge p3, p4, :cond_5
+ 
+-    new-instance v3, Ljava/lang/StringBuilder;
++    new-instance v0, Ljava/lang/StringBuilder;
+ 
+-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
++    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+ 
+     iget-object v4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     iget-object v4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    aget-object v4, v4, p2
++    aget-object v4, v4, p3
+ 
+-    invoke-static {v3, v4, p3}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
++    invoke-static {v0, v4, p2}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+ 
+-    move-result-object v3
++    move-result-object v0
+ 
+-    iput-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
++    iput-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+     goto :goto_3
+ 
+@@ -696,15 +694,15 @@
+ 
+     invoke-direct {p4}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    aget-object v3, v3, p2
++    aget-object v0, v0, p3
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     invoke-virtual {p4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+@@ -716,15 +714,15 @@
+ 
+     invoke-direct {p4}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    invoke-virtual {p4, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     invoke-virtual {p4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+@@ -732,7 +730,7 @@
+ 
+     iput-object p4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsCamBackBackoffDefined:Z
++    iput-boolean v2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsCamBackBackoffDefined:Z
+ 
+     sget-boolean p4, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->DBG:Z
+ 
+@@ -740,24 +738,24 @@
+ 
+     new-instance p4, Ljava/lang/StringBuilder;
+ 
+-    const-string v3, "CAM_B Backoff is defined as "
++    const-string v0, "CAM_B Backoff is defined as "
+ 
+-    invoke-direct {p4, v3}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
++    invoke-direct {p4, v0}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+ 
+-    iget-object v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
++    iget-object v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCAM_BACK_CUSTOM_BACKOFF:Ljava/lang/String;
+ 
+-    invoke-static {p4, v3, v2}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)V
++    invoke-static {p4, v0, v3}, Lcom/samsung/android/mcf/continuity/common/DLog$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;)V
+ 
+     goto :goto_4
+ 
+     :cond_6
+     iget-object p4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    aget-object p4, p4, p2
++    aget-object p4, p4, p3
+ 
+-    const-string v3, "UWB_5G_CX"
++    const-string v0, "UWB_5G_CX"
+ 
+-    invoke-virtual {v3, p4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++    invoke-virtual {v0, p4}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
+     move-result p4
+ 
+@@ -765,9 +763,9 @@
+ 
+     iget-object p4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    add-int/lit8 p2, p2, 0x1
++    add-int/lit8 p3, p3, 0x1
+ 
+-    aget-object p4, p4, p2
++    aget-object p4, p4, p3
+ 
+     invoke-static {p4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+@@ -777,9 +775,9 @@
+ 
+     iget-object p4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mCustomBackoffArray:[Ljava/lang/String;
+ 
+-    add-int/2addr p2, v1
++    add-int/2addr p3, v2
+ 
+-    aget-object p4, p4, p2
++    aget-object p4, p4, p3
+ 
+     invoke-static {p4}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+@@ -787,7 +785,7 @@
+ 
+     iput p4, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->uwbCxEnd5gCh:I
+ 
+-    iput-boolean v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsUwbCxfor5GhzDefined:Z
++    iput-boolean v2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mIsUwbCxfor5GhzDefined:Z
+ 
+     sget-boolean p4, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->DBG:Z
+ 
+@@ -795,30 +793,30 @@
+ 
+     new-instance p4, Ljava/lang/StringBuilder;
+ 
+-    const-string v3, "UWB_5G_CX is defined as "
++    const-string v0, "UWB_5G_CX is defined as "
+ 
+-    invoke-direct {p4, v3}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
++    invoke-direct {p4, v0}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+ 
+-    iget v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->uwbCxStart5gCh:I
++    iget v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->uwbCxStart5gCh:I
+ 
+-    invoke-virtual {p4, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+ 
+-    invoke-virtual {p4, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {p4, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    iget v3, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->uwbCxEnd5gCh:I
++    iget v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->uwbCxEnd5gCh:I
+ 
+-    invoke-static {p4, v3, v2}, Lcom/samsung/android/server/wifi/SemCellularStateManager$1$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;ILjava/lang/String;)V
++    invoke-static {p4, v0, v3}, Lcom/samsung/android/server/wifi/SemCellularStateManager$1$$ExternalSyntheticOutline0;->m(Ljava/lang/StringBuilder;ILjava/lang/String;)V
+ 
+     :cond_7
+     :goto_4
+-    add-int/2addr p2, v1
++    add-int/2addr p3, v2
+ 
+     goto/16 :goto_0
+ 
+     :cond_8
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->laaEnterState:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->laaEnterState:I
+ 
+-    iput v0, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->laaActiveState:I
++    iput v1, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->laaActiveState:I
+ 
+     iget-object p2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mContext:Landroid/content/Context;
+ 
+@@ -828,9 +826,9 @@
+ 
+     new-instance p4, Landroid/content/IntentFilter;
+ 
+-    const-string v1, "android.intent.action.coexstatus"
++    const-string v0, "android.intent.action.coexstatus"
+ 
+-    invoke-direct {p4, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
++    invoke-direct {p4, v0}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+ 
+     invoke-virtual {p2, p3, p4}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+ 
+@@ -842,15 +840,15 @@
+ 
+     new-instance p4, Landroid/content/IntentFilter;
+ 
+-    const-string v1, "android.net.wifi.p2p.CONNECTION_STATE_CHANGE"
++    const-string v0, "android.net.wifi.p2p.CONNECTION_STATE_CHANGE"
+ 
+-    invoke-direct {p4, v1}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
++    invoke-direct {p4, v0}, Landroid/content/IntentFilter;-><init>(Ljava/lang/String;)V
+ 
+     invoke-virtual {p2, p3, p4}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+ 
+     new-instance p2, Lcom/samsung/android/server/wifi/SemWifiCoexManager$SoftApCallback;
+ 
+-    invoke-direct {p2, p0, v0}, Lcom/samsung/android/server/wifi/SemWifiCoexManager$SoftApCallback;-><init>(Lcom/samsung/android/server/wifi/SemWifiCoexManager;I)V
++    invoke-direct {p2, p0, v1}, Lcom/samsung/android/server/wifi/SemWifiCoexManager$SoftApCallback;-><init>(Lcom/samsung/android/server/wifi/SemWifiCoexManager;I)V
+ 
+     iput-object p2, p0, Lcom/samsung/android/server/wifi/SemWifiCoexManager;->mSoftApCallback:Lcom/samsung/android/server/wifi/SemWifiCoexManager$SoftApCallback;
+ 
+-- 
+2.43.0
+

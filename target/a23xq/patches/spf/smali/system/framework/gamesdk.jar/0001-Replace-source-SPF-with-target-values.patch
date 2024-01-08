@@ -1,0 +1,34 @@
+From 42bd2d7a885fd981cf074c7f436316315537a401 Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Wed, 29 Nov 2023 00:58:18 +0100
+Subject: [PATCH] Replace source SPF with target values
+
+---
+ smali/com/samsung/android/gamesdk/vrr/GameSDKVrrManager.smali | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/smali/com/samsung/android/gamesdk/vrr/GameSDKVrrManager.smali b/smali/com/samsung/android/gamesdk/vrr/GameSDKVrrManager.smali
+index 878b5f1..a508238 100644
+--- a/smali/com/samsung/android/gamesdk/vrr/GameSDKVrrManager.smali
++++ b/smali/com/samsung/android/gamesdk/vrr/GameSDKVrrManager.smali
+@@ -641,7 +641,7 @@
+ .method private isGameSDKVrrSupportedByDevice()Z
+     .locals 1
+ 
+-    const-string v0, "2"
++    const-string v0, "1"
+ 
+     invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+@@ -663,7 +663,7 @@
+ .method private isGameSDKVrrSwitchableDevice()Z
+     .locals 2
+ 
+-    const-string v0, "2"
++    const-string v0, "1"
+ 
+     invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+-- 
+2.43.0
+

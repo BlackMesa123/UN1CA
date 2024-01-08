@@ -1,0 +1,107 @@
+From a9aefbe29b8fd7965ddcefe1b956197cdf423f60 Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Thu, 30 Nov 2023 13:54:20 +0100
+Subject: [PATCH] Replace source SPF with target values
+
+---
+ smali_classes4/com/samsung/android/settings/Rune.smali    | 2 +-
+ .../biometrics/fingerprint/FingerprintSettingsUtils.smali | 8 ++++----
+ .../android/settings/display/SecDisplayUtils.smali        | 8 ++++----
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/smali_classes4/com/samsung/android/settings/Rune.smali b/smali_classes4/com/samsung/android/settings/Rune.smali
+index afcca13f..3122c61a 100644
+--- a/smali_classes4/com/samsung/android/settings/Rune.smali
++++ b/smali_classes4/com/samsung/android/settings/Rune.smali
+@@ -247,7 +247,7 @@
+ 
+     sput-object v0, Lcom/samsung/android/settings/Rune;->mSupportDisplayCut:Ljava/lang/Boolean;
+ 
+-    const-string v2, "5"
++    const-string v2, "3"
+ 
+     invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+diff --git a/smali_classes4/com/samsung/android/settings/biometrics/fingerprint/FingerprintSettingsUtils.smali b/smali_classes4/com/samsung/android/settings/biometrics/fingerprint/FingerprintSettingsUtils.smali
+index 27e7f97f..3ef7ab8f 100644
+--- a/smali_classes4/com/samsung/android/settings/biometrics/fingerprint/FingerprintSettingsUtils.smali
++++ b/smali_classes4/com/samsung/android/settings/biometrics/fingerprint/FingerprintSettingsUtils.smali
+@@ -848,7 +848,7 @@
+ 
+     const-string v0, ","
+ 
+-    const-string v1, "google_touch_display_ultrasonic"
++    const-string v1, "google_touch_side,settings=3,navi=1"
+ 
+     invoke-virtual {v1, v0}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+ 
+@@ -971,7 +971,7 @@
+ .method public static isDisplaySensor()Z
+     .locals 1
+ 
+-    const/4 v0, 0x1
++    const/4 v0, 0x0
+ 
+     return v0
+ .end method
+@@ -1129,7 +1129,7 @@
+ 
+     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    const-string v2, "google_touch_display_ultrasonic"
++    const-string v2, "google_touch_side,settings=3,navi=1"
+ 
+     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+@@ -1197,7 +1197,7 @@
+ .method public static isSideSensor()Z
+     .locals 1
+ 
+-    const/4 v0, 0x0
++    const/4 v0, 0x1
+ 
+     return v0
+ .end method
+diff --git a/smali_classes4/com/samsung/android/settings/display/SecDisplayUtils.smali b/smali_classes4/com/samsung/android/settings/display/SecDisplayUtils.smali
+index 20e66c57..f9fb3cb1 100644
+--- a/smali_classes4/com/samsung/android/settings/display/SecDisplayUtils.smali
++++ b/smali_classes4/com/samsung/android/settings/display/SecDisplayUtils.smali
+@@ -2712,7 +2712,7 @@
+ 
+     if-eq p1, v0, :cond_0
+ 
+-    const-string p0, "2"
++    const-string p0, "1"
+ 
+     invoke-static {p0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+@@ -2754,7 +2754,7 @@
+ 
+     if-eq p1, v0, :cond_0
+ 
+-    const-string p0, "24,10,30,48,60,96,120"
++    const-string p0, "60,120"
+ 
+     invoke-virtual {p0, v1}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+ 
+@@ -2897,7 +2897,7 @@
+ .method public static getMinSupportedRefreshRate()I
+     .locals 2
+ 
+-    const-string v0, "24,10,30,48,60,96,120"
++    const-string v0, "60,120"
+ 
+     invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+ 
+@@ -6896,7 +6896,7 @@
+ 
+     if-eq p1, v3, :cond_1
+ 
+-    const-string p0, "2"
++    const-string p0, "1"
+ 
+     invoke-static {p0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+-- 
+2.43.0
+

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="config_autoBrightnessHbmAmbientLux">3000</integer>
+    <integer name="config_screenBrightnessDim">7</integer>
+    <integer name="config_screenBrightnessExtendedMaximum">306</integer>
+    <integer name="config_screenBrightnessSettingDefault">128</integer>
+    <integer name="config_screenBrightnessSettingMaximum">255</integer>
+    <integer name="config_screenBrightnessSettingMinimum">1</integer>
+</resources>

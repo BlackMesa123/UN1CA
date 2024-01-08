@@ -1,0 +1,304 @@
+From 9b11a9376dfd525b31303c9c3163f5a7b52201b9 Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Wed, 29 Nov 2023 01:43:27 +0100
+Subject: [PATCH] Replace source SPF with target values
+
+---
+ .../fingerprint/FingerprintManager.smali      |  4 +--
+ .../com/samsung/android/audio/Rune.smali      | 10 ++++---
+ ...emFingerprintManager$Characteristics.smali |  4 +--
+ .../fingerprint/SemFingerprintManager.smali   |  2 +-
+ .../camera/mic/SemMultiMicManager.smali       |  4 +--
+ .../hardware/display/RefreshRateConfig.smali  | 30 ++++++++-----------
+ .../com/samsung/android/rune/CoreRune.smali   |  4 +--
+ .../samsung/android/vibrator/VibRune.smali    | 22 +++++++-------
+ 8 files changed, 39 insertions(+), 41 deletions(-)
+
+diff --git a/smali_classes2/android/hardware/fingerprint/FingerprintManager.smali b/smali_classes2/android/hardware/fingerprint/FingerprintManager.smali
+index f15b1005..aef2a2c3 100644
+--- a/smali_classes2/android/hardware/fingerprint/FingerprintManager.smali
++++ b/smali_classes2/android/hardware/fingerprint/FingerprintManager.smali
+@@ -1181,7 +1181,7 @@
+ 
+     const-string v0, "touch_display"
+ 
+-    const-string v1, "google_touch_display_ultrasonic"
++    const-string v1, "google_touch_side,settings=3,navi=1"
+ 
+     invoke-virtual {v1, v0}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+ 
+@@ -1230,7 +1230,7 @@
+ 
+     const-string v0, "transition_effect_on"
+ 
+-    const-string v1, "google_touch_display_ultrasonic"
++    const-string v1, "google_touch_side,settings=3,navi=1"
+ 
+     invoke-virtual {v1, v0}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+ 
+diff --git a/smali_classes5/com/samsung/android/audio/Rune.smali b/smali_classes5/com/samsung/android/audio/Rune.smali
+index fb0d1edf..112011ff 100644
+--- a/smali_classes5/com/samsung/android/audio/Rune.smali
++++ b/smali_classes5/com/samsung/android/audio/Rune.smali
+@@ -250,7 +250,7 @@
+ 
+ .field public static final blacklist SEC_AUDIO_SUPPORT_ACH_RINGTONE:Z
+ 
+-.field public static final blacklist SEC_AUDIO_SUPPORT_DUAL_SPEAKER:Z = true
++.field public static final blacklist SEC_AUDIO_SUPPORT_DUAL_SPEAKER:Z = false
+ 
+ .field public static final blacklist SEC_AUDIO_SUPPORT_FOLD_STATE:Z = false
+ 
+@@ -309,7 +309,7 @@
+ .method static constructor blacklist <clinit>()V
+     .locals 10
+ 
+-    const-string v0, "2"
++    const-string v0, "1"
+ 
+     invoke-static {v0}, Ljava/lang/Integer;->valueOf(Ljava/lang/String;)Ljava/lang/Integer;
+ 
+@@ -423,9 +423,11 @@
+ 
+     sput-boolean v2, Lcom/samsung/android/audio/Rune;->SEC_AUDIO_SUPPORT_SOUND_THEME:Z
+ 
+-    const-string v0, "ACH"
++    const-string v0, ""
+ 
+-    invoke-virtual {v0, v0}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
++    const-string v3, "ACH"
++
++    invoke-virtual {v0, v3}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+ 
+     move-result v0
+ 
+diff --git a/smali_classes5/com/samsung/android/bio/fingerprint/SemFingerprintManager$Characteristics.smali b/smali_classes5/com/samsung/android/bio/fingerprint/SemFingerprintManager$Characteristics.smali
+index 089a845c..1d9d792d 100644
+--- a/smali_classes5/com/samsung/android/bio/fingerprint/SemFingerprintManager$Characteristics.smali
++++ b/smali_classes5/com/samsung/android/bio/fingerprint/SemFingerprintManager$Characteristics.smali
+@@ -29,7 +29,7 @@
+ 
+ .field public static final whitelist SENSOR_TYPE_ULTRASONIC:I = 0x3
+ 
+-.field private static final blacklist mConfig:Ljava/lang/String; = "google_touch_display_ultrasonic"
++.field private static final blacklist mConfig:Ljava/lang/String; = "google_touch_side,settings=3,navi=1"
+ 
+ 
+ # instance fields
+@@ -96,7 +96,7 @@
+ 
+     const-string/jumbo v0, "ultrasonic"
+ 
+-    const-string/jumbo v1, "google_touch_display_ultrasonic"
++    const-string/jumbo v1, "google_touch_side,settings=3,navi=1"
+ 
+     invoke-virtual {v1, v0}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+ 
+diff --git a/smali_classes5/com/samsung/android/bio/fingerprint/SemFingerprintManager.smali b/smali_classes5/com/samsung/android/bio/fingerprint/SemFingerprintManager.smali
+index 97515a6d..e0c34c99 100644
+--- a/smali_classes5/com/samsung/android/bio/fingerprint/SemFingerprintManager.smali
++++ b/smali_classes5/com/samsung/android/bio/fingerprint/SemFingerprintManager.smali
+@@ -407,7 +407,7 @@
+ 
+     if-eq v0, v1, :cond_0
+ 
+-    const-string/jumbo v0, "google_touch_display_ultrasonic"
++    const-string/jumbo v0, "google_touch_side,settings=3,navi=1"
+ 
+     return-object v0
+ 
+diff --git a/smali_classes5/com/samsung/android/camera/mic/SemMultiMicManager.smali b/smali_classes5/com/samsung/android/camera/mic/SemMultiMicManager.smali
+index 20c36fff..166b793f 100644
+--- a/smali_classes5/com/samsung/android/camera/mic/SemMultiMicManager.smali
++++ b/smali_classes5/com/samsung/android/camera/mic/SemMultiMicManager.smali
+@@ -199,7 +199,7 @@
+     const/4 v0, 0x0
+ 
+     :try_start_0
+-    const-string v1, "08020"
++    const-string v1, "07010"
+ 
+     invoke-static {v1}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+@@ -287,7 +287,7 @@
+     const/4 v0, 0x0
+ 
+     :try_start_0
+-    const-string v2, "08020"
++    const-string v2, "07010"
+ 
+     invoke-static {v2}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+diff --git a/smali_classes5/com/samsung/android/hardware/display/RefreshRateConfig.smali b/smali_classes5/com/samsung/android/hardware/display/RefreshRateConfig.smali
+index 271843ef..d8795929 100644
+--- a/smali_classes5/com/samsung/android/hardware/display/RefreshRateConfig.smali
++++ b/smali_classes5/com/samsung/android/hardware/display/RefreshRateConfig.smali
+@@ -431,7 +431,7 @@
+ 
+     move-result-object v0
+ 
+-    const-string v1, "2"
++    const-string v1, "1"
+ 
+     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+@@ -457,7 +457,7 @@
+ 
+     move-result-object v0
+ 
+-    const-string v1, "24,10,30,48,60,96,120"
++    const-string v1, "60,120"
+ 
+     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+@@ -483,7 +483,9 @@
+ 
+     move-result-object v0
+ 
+-    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    const-string v1, "60"
++
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     move-result-object v0
+ 
+@@ -507,9 +509,7 @@
+ 
+     move-result-object v0
+ 
+-    const-string v1, "84,91"
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     move-result-object v0
+ 
+@@ -586,9 +586,7 @@
+ 
+     move-result-object v0
+ 
+-    const-string v1, "200,2500"
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     move-result-object v0
+ 
+@@ -655,7 +653,7 @@
+ .end method
+ 
+ .method public static blacklist getInstance()Lcom/samsung/android/hardware/display/RefreshRateConfig;
+-    .locals 6
++    .locals 5
+ 
+     sget-boolean v0, Lcom/samsung/android/rune/CoreRune;->FW_VRR_FOR_SUB_DISPLAY:Z
+ 
+@@ -703,17 +701,15 @@
+ 
+     const-string/jumbo v3, "persist.dm.passive.ambient_brightness"
+ 
+-    const-string v4, "84,91"
+-
+-    const-string v5, "200,2500"
++    invoke-direct {v0, v1, v1, v2, v3}, Lcom/samsung/android/hardware/display/RefreshRateConfig$BrightnessThreshold;-><init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    invoke-direct {v0, v4, v5, v2, v3}, Lcom/samsung/android/hardware/display/RefreshRateConfig$BrightnessThreshold;-><init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
++    const-string v2, "1"
+ 
+-    const-string v2, "2"
++    const-string v3, "60,120"
+ 
+-    const-string v3, "24,10,30,48,60,96,120"
++    const-string v4, "60"
+ 
+-    invoke-static {v2, v3, v1, v0}, Lcom/samsung/android/hardware/display/RefreshRateConfig;->createRefreshRateConfig(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/samsung/android/hardware/display/RefreshRateConfig$BrightnessThreshold;)Lcom/samsung/android/hardware/display/RefreshRateConfig;
++    invoke-static {v2, v3, v4, v0}, Lcom/samsung/android/hardware/display/RefreshRateConfig;->createRefreshRateConfig(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/samsung/android/hardware/display/RefreshRateConfig$BrightnessThreshold;)Lcom/samsung/android/hardware/display/RefreshRateConfig;
+ 
+     move-result-object v0
+ 
+diff --git a/smali_classes5/com/samsung/android/rune/CoreRune.smali b/smali_classes5/com/samsung/android/rune/CoreRune.smali
+index 4870523e..de9deda0 100644
+--- a/smali_classes5/com/samsung/android/rune/CoreRune.smali
++++ b/smali_classes5/com/samsung/android/rune/CoreRune.smali
+@@ -2629,7 +2629,7 @@
+ 
+     nop
+ 
+-    const-string/jumbo v3, "google_touch_display_ultrasonic"
++    const-string/jumbo v3, "google_touch_side,settings=3,navi=1"
+ 
+     const-string/jumbo v4, "touch_side"
+ 
+@@ -2989,7 +2989,7 @@
+ 
+     nop
+ 
+-    const-string v3, "2"
++    const-string v3, "1"
+ 
+     invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 
+diff --git a/smali_classes5/com/samsung/android/vibrator/VibRune.smali b/smali_classes5/com/samsung/android/vibrator/VibRune.smali
+index 90dc188f..a4604f7b 100644
+--- a/smali_classes5/com/samsung/android/vibrator/VibRune.smali
++++ b/smali_classes5/com/samsung/android/vibrator/VibRune.smali
+@@ -81,7 +81,9 @@
+ 
+     const-string v1, "ACH"
+ 
+-    invoke-virtual {v1, v1}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
++    const-string v2, ""
++
++    invoke-virtual {v2, v1}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+ 
+     move-result v1
+ 
+@@ -91,9 +93,9 @@
+ 
+     move-result-object v1
+ 
+-    const-string v2, "SEC_FLOATING_FEATURE_AUDIO_SUPPORT_DC_MOTOR_HAPTIC_FEEDBACK"
++    const-string v3, "SEC_FLOATING_FEATURE_AUDIO_SUPPORT_DC_MOTOR_HAPTIC_FEEDBACK"
+ 
+-    invoke-virtual {v1, v2}, Lcom/samsung/android/feature/SemFloatingFeature;->getBoolean(Ljava/lang/String;)Z
++    invoke-virtual {v1, v3}, Lcom/samsung/android/feature/SemFloatingFeature;->getBoolean(Ljava/lang/String;)Z
+ 
+     move-result v1
+ 
+@@ -103,15 +105,15 @@
+ 
+     move-result-object v1
+ 
+-    const-string v2, "CountryISO"
++    const-string v3, "CountryISO"
+ 
+-    invoke-virtual {v1, v2}, Lcom/samsung/android/feature/SemCscFeature;->getString(Ljava/lang/String;)Ljava/lang/String;
++    invoke-virtual {v1, v3}, Lcom/samsung/android/feature/SemCscFeature;->getString(Ljava/lang/String;)Ljava/lang/String;
+ 
+     move-result-object v1
+ 
+-    const-string v2, "JP"
++    const-string v3, "JP"
+ 
+-    invoke-virtual {v2, v1}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
++    invoke-virtual {v3, v1}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
+ 
+     move-result v1
+ 
+@@ -121,11 +123,9 @@
+ 
+     move-result-object v1
+ 
+-    const-string v2, "CscFeature_SystemUI_ConfigDndExceptionPackage"
+-
+-    const-string v3, ""
++    const-string v3, "CscFeature_SystemUI_ConfigDndExceptionPackage"
+ 
+-    invoke-virtual {v1, v2, v3}, Lcom/samsung/android/feature/SemCscFeature;->getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
++    invoke-virtual {v1, v3, v2}, Lcom/samsung/android/feature/SemCscFeature;->getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+ 
+     move-result-object v1
+ 
+-- 
+2.43.0
+

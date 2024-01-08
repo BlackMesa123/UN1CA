@@ -1,0 +1,5 @@
+# Netflix
+ro.netflix.bsp_rev=Q4350-32962-1
+
+# Fix Edge lighting corner radius
+ro.factory.model=SM-S901B

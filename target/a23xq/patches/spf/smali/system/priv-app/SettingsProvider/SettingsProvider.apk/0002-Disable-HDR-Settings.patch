@@ -1,0 +1,33 @@
+From d11efb385122fa57117572c4349b2270253ba9ad Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Wed, 6 Dec 2023 18:06:37 +0100
+Subject: [PATCH] Disable HDR Settings
+
+---
+ .../android/providers/settings/DatabaseHelper.smali    | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/smali/com/android/providers/settings/DatabaseHelper.smali b/smali/com/android/providers/settings/DatabaseHelper.smali
+index db5c78c..ba8aaee 100644
+--- a/smali/com/android/providers/settings/DatabaseHelper.smali
++++ b/smali/com/android/providers/settings/DatabaseHelper.smali
+@@ -4479,16 +4479,6 @@
+     invoke-direct {v1, v3, v6, v8}, Lcom/android/providers/settings/DatabaseHelper;->loadSetting(Landroid/database/sqlite/SQLiteStatement;Ljava/lang/String;Ljava/lang/Object;)V
+ 
+     :goto_16
+-    const-string v6, "hdr_effect"
+-
+-    const/4 v7, 0x0
+-
+-    invoke-static {v7}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v8
+-
+-    invoke-direct {v1, v3, v6, v8}, Lcom/android/providers/settings/DatabaseHelper;->loadSetting(Landroid/database/sqlite/SQLiteStatement;Ljava/lang/String;Ljava/lang/Object;)V
+-
+     invoke-static {}, Landroid/os/FactoryTest;->isFactoryBinary()Z
+ 
+     move-result v6
+-- 
+2.43.0
+

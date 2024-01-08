@@ -1,0 +1,8 @@
+# Remove duplicated props
+bluetooth.profile.bap.unicast.client.enabled=
+bluetooth.profile.csip.set_coordinator.enabled=
+bluetooth.profile.mcp.server.enabled=
+bluetooth.profile.ccp.server.enabled=
+bluetooth.profile.vcp.controller.enabled=
+bluetooth.profile.bap.broadcast.assist.enabled=
+ro.frp.pst=

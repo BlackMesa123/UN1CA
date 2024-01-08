@@ -1,0 +1,2924 @@
+From 97ccc81cbef9acf9e7dba32e86d9ae5e4551d5d1 Mon Sep 17 00:00:00 2001
+From: BlackMesa123 <giangrecosalvo9@gmail.com>
+Date: Wed, 6 Dec 2023 17:32:04 +0100
+Subject: [PATCH] Disable HW mDNIe
+
+---
+ ...tyManagerService$A11YBrocastReceiver.smali | 209 ++--
+ ...Service$AccessibilityContentObserver.smali |  12 +-
+ ...e$ColorInversionStateContentObserver.smali |  65 +-
+ .../AccessibilityManagerService.smali         | 902 ++++++++--------
+ .../display/SemMdnieManagerService.smali      | 973 +++---------------
+ .../custom/KnoxCustomManagerService.smali     | 204 +---
+ 6 files changed, 785 insertions(+), 1580 deletions(-)
+
+diff --git a/smali/com/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver.smali b/smali/com/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver.smali
+index cb116485..391e70e3 100644
+--- a/smali/com/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver.smali
++++ b/smali/com/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver.smali
+@@ -29,7 +29,7 @@
+ 
+ # virtual methods
+ .method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
+-    .locals 4
++    .locals 3
+ 
+     invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
+ 
+@@ -45,36 +45,24 @@
+ 
+     invoke-static {}, Landroid/os/UserHandle;->myUserId()I
+ 
+-    move-result p2
++    move-result p1
+ 
+     invoke-static {}, Landroid/app/ActivityManager;->getCurrentUser()I
+ 
+-    move-result v0
++    move-result p2
+ 
+-    if-eq p2, v0, :cond_0
++    if-eq p1, p2, :cond_0
+ 
+     return-void
+ 
+     :cond_0
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+-
+-    invoke-static {p2, p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$msetColorLensState(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/content/Context;)V
+-
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+-
+-    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$menableColorRelumino(Lcom/android/server/accessibility/AccessibilityManagerService;)V
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+-
+-    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$misDexDualMonitorDisplay(Lcom/android/server/accessibility/AccessibilityManagerService;)Z
+-
+-    move-result p2
+-
+-    if-nez p2, :cond_5
++    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$menableColorLens(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+ 
+     iget-object p0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {p0, p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$msetColorAdjustment(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/content/Context;)V
++    invoke-static {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$menableColorRelumino(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+ 
+     goto/16 :goto_0
+ 
+@@ -85,7 +73,7 @@
+ 
+     move-result p2
+ 
+-    if-eqz p2, :cond_5
++    if-eqz p2, :cond_4
+ 
+     iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+@@ -95,210 +83,197 @@
+ 
+     invoke-virtual {p2, p1}, Lcom/android/server/accessibility/GestureWakeup;->checkSettingCondition(Landroid/content/Context;)Z
+ 
+-    move-result p2
++    move-result p1
+ 
+-    if-eqz p2, :cond_2
++    if-eqz p1, :cond_2
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmGesturewakeup(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/GestureWakeup;
++    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmGesturewakeup(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/GestureWakeup;
+ 
+-    move-result-object p2
++    move-result-object p1
+ 
+-    invoke-virtual {p2}, Lcom/android/server/accessibility/GestureWakeup;->StopGestureWakeup()Z
++    invoke-virtual {p1}, Lcom/android/server/accessibility/GestureWakeup;->StopGestureWakeup()Z
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmGesturewakeup(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/GestureWakeup;
++    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmGesturewakeup(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/GestureWakeup;
+ 
+-    move-result-object p2
++    move-result-object p1
+ 
+-    invoke-virtual {p2}, Lcom/android/server/accessibility/GestureWakeup;->StartGestureWakeup()Z
++    invoke-virtual {p1}, Lcom/android/server/accessibility/GestureWakeup;->StartGestureWakeup()Z
+ 
+     :cond_2
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
++    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
+ 
+-    move-result-object p2
++    move-result-object p1
+ 
+-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+ 
+-    move-result-object p2
++    move-result-object p1
+ 
+-    const-string/jumbo v0, "user_setup_complete"
++    const-string/jumbo p2, "user_setup_complete"
+ 
+-    const/4 v1, -0x2
++    const/4 v0, -0x2
+ 
+-    const/4 v2, 0x0
++    const/4 v1, 0x0
+ 
+-    invoke-static {p2, v0, v2, v1}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
++    invoke-static {p1, p2, v1, v0}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+ 
+-    move-result p2
++    move-result p1
+ 
+-    if-nez p2, :cond_3
++    if-nez p1, :cond_3
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    new-instance v0, Lcom/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver;
++    new-instance p2, Lcom/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver;
+ 
+-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-direct {v0, v1}, Lcom/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver;-><init>(Lcom/android/server/accessibility/AccessibilityManagerService;)V
++    invoke-direct {p2, v0}, Lcom/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver;-><init>(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+ 
+-    invoke-static {p2, v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fputmColorInversionStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver;)V
++    invoke-static {p1, p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fputmColorInversionStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver;)V
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
++    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
+ 
+-    move-result-object p2
++    move-result-object p1
++
++    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+ 
+-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++    move-result-object p1
++
++    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++
++    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmColorInversionStateUri(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/net/Uri;
+ 
+     move-result-object p2
+ 
+     iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmColorInversionStateUri(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/net/Uri;
++    invoke-static {v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmColorInversionStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver;
+ 
+     move-result-object v0
+ 
+-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    const/4 v2, -0x1
+ 
+-    invoke-static {v1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmColorInversionStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver;
++    invoke-virtual {p1, p2, v1, v0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
+ 
+-    move-result-object v1
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    const/4 v3, -0x1
++    new-instance p2, Lcom/android/server/accessibility/AccessibilityManagerService$SetupCompleteStateContentObserver;
+ 
+-    invoke-virtual {p2, v0, v2, v1, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
++    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    invoke-direct {p2, v0}, Lcom/android/server/accessibility/AccessibilityManagerService$SetupCompleteStateContentObserver;-><init>(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+ 
+-    new-instance v0, Lcom/android/server/accessibility/AccessibilityManagerService$SetupCompleteStateContentObserver;
++    invoke-static {p1, p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fputmSetupCompleteStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityManagerService$SetupCompleteStateContentObserver;)V
+ 
+-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-direct {v0, v1}, Lcom/android/server/accessibility/AccessibilityManagerService$SetupCompleteStateContentObserver;-><init>(Lcom/android/server/accessibility/AccessibilityManagerService;)V
++    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
+ 
+-    invoke-static {p2, v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fputmSetupCompleteStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityManagerService$SetupCompleteStateContentObserver;)V
++    move-result-object p1
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+ 
+-    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
++    move-result-object p1
+ 
+-    move-result-object p2
++    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmSetupCompleteUri(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/net/Uri;
+ 
+     move-result-object p2
+ 
+     iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmSetupCompleteUri(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/net/Uri;
++    invoke-static {v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmSetupCompleteStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityManagerService$SetupCompleteStateContentObserver;
+ 
+     move-result-object v0
+ 
+-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    invoke-virtual {p1, p2, v1, v0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
+ 
+-    invoke-static {v1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmSetupCompleteStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityManagerService$SetupCompleteStateContentObserver;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    move-result-object v1
++    new-instance p2, Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerEnabledStateContentObserver;
+ 
+-    invoke-virtual {p2, v0, v2, v1, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
++    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    invoke-direct {p2, v0}, Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerEnabledStateContentObserver;-><init>(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+ 
+-    new-instance v0, Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerEnabledStateContentObserver;
++    invoke-static {p1, p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fputmDaltonizerEnabledStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerEnabledStateContentObserver;)V
+ 
+-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-direct {v0, v1}, Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerEnabledStateContentObserver;-><init>(Lcom/android/server/accessibility/AccessibilityManagerService;)V
++    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
+ 
+-    invoke-static {p2, v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fputmDaltonizerEnabledStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerEnabledStateContentObserver;)V
++    move-result-object p1
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+ 
+-    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
++    move-result-object p1
+ 
+-    move-result-object p2
++    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmDisplayDaltonizerEnabledUri(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/net/Uri;
+ 
+     move-result-object p2
+ 
+     iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmDisplayDaltonizerEnabledUri(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/net/Uri;
++    invoke-static {v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmDaltonizerEnabledStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerEnabledStateContentObserver;
+ 
+     move-result-object v0
+ 
+-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    invoke-virtual {p1, p2, v1, v0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
+ 
+-    invoke-static {v1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmDaltonizerEnabledStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerEnabledStateContentObserver;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    move-result-object v1
++    new-instance p2, Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerStateContentObserver;
+ 
+-    invoke-virtual {p2, v0, v2, v1, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
++    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    invoke-direct {p2, v0}, Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerStateContentObserver;-><init>(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+ 
+-    new-instance v0, Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerStateContentObserver;
++    invoke-static {p1, p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fputmDaltonizerStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerStateContentObserver;)V
+ 
+-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-direct {v0, v1}, Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerStateContentObserver;-><init>(Lcom/android/server/accessibility/AccessibilityManagerService;)V
++    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
+ 
+-    invoke-static {p2, v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fputmDaltonizerStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerStateContentObserver;)V
++    move-result-object p1
+ 
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+ 
+-    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
++    move-result-object p1
+ 
+-    move-result-object p2
++    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-virtual {p2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmDisplayDaltonizerUri(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/net/Uri;
+ 
+     move-result-object p2
+ 
+     iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmDisplayDaltonizerUri(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/net/Uri;
++    invoke-static {v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmDaltonizerStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerStateContentObserver;
+ 
+     move-result-object v0
+ 
+-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+-
+-    invoke-static {v1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmDaltonizerStateContentObserver(Lcom/android/server/accessibility/AccessibilityManagerService;)Lcom/android/server/accessibility/AccessibilityManagerService$DaltonizerStateContentObserver;
+-
+-    move-result-object v1
+-
+-    invoke-virtual {p2, v0, v2, v1, v3}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
++    invoke-virtual {p1, p2, v1, v0, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
+ 
+     :cond_3
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$misDexDualMonitorDisplay(Lcom/android/server/accessibility/AccessibilityManagerService;)Z
+-
+-    move-result p2
+-
+-    if-nez p2, :cond_4
+-
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+-
+-    invoke-static {p2, p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$msetColorAdjustment(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/content/Context;)V
+-
+-    :cond_4
+-    iget-object p2, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+-
+-    invoke-static {p2, p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$msetColorLensState(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/content/Context;)V
++    invoke-static {p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$menableColorLens(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+ 
+     iget-object p0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$A11YBrocastReceiver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+     invoke-static {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$menableColorRelumino(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+ 
+-    :cond_5
++    :cond_4
+     :goto_0
+     return-void
+ .end method
+diff --git a/smali/com/android/server/accessibility/AccessibilityManagerService$AccessibilityContentObserver.smali b/smali/com/android/server/accessibility/AccessibilityManagerService$AccessibilityContentObserver.smali
+index 44fddf81..45177b31 100644
+--- a/smali/com/android/server/accessibility/AccessibilityManagerService$AccessibilityContentObserver.smali
++++ b/smali/com/android/server/accessibility/AccessibilityManagerService$AccessibilityContentObserver.smali
+@@ -1146,11 +1146,7 @@
+ 
+     iget-object p0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$AccessibilityContentObserver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
+-
+-    move-result-object p2
+-
+-    invoke-static {p0, p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$msetColorLensState(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/content/Context;)V
++    invoke-static {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$menableColorLens(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+ 
+     goto :goto_5
+ 
+@@ -1198,11 +1194,7 @@
+     :goto_0
+     iget-object p0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$AccessibilityContentObserver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+-    invoke-static {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
+-
+-    move-result-object p2
+-
+-    invoke-static {p0, p2}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$msetColorLensState(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/content/Context;)V
++    invoke-static {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$mupdateColorLensValue(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+ 
+     goto :goto_5
+ 
+diff --git a/smali/com/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver.smali b/smali/com/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver.smali
+index b3e61ced..14a36db0 100644
+--- a/smali/com/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver.smali
++++ b/smali/com/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver.smali
+@@ -25,7 +25,7 @@
+ 
+ # virtual methods
+ .method public onChange(Z)V
+-    .locals 5
++    .locals 7
+ 
+     invoke-super {p0, p1}, Landroid/database/ContentObserver;->onChange(Z)V
+ 
+@@ -75,6 +75,34 @@
+     move v1, v4
+ 
+     :goto_0
++    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
++
++    invoke-static {v3}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
++
++    move-result-object v3
++
++    invoke-virtual {v3}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++
++    move-result-object v3
++
++    const-string v5, "accessibility_display_inversion_enabled"
++
++    iget v6, p1, Lcom/android/server/accessibility/AccessibilityUserState;->mUserId:I
++
++    invoke-static {v3, v5, v4, v6}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
++
++    move-result v3
++
++    if-eqz v3, :cond_1
++
++    move v3, v2
++
++    goto :goto_1
++
++    :cond_1
++    move v3, v4
++
++    :goto_1
+     iget-object p0, p0, Lcom/android/server/accessibility/AccessibilityManagerService$ColorInversionStateContentObserver;->this$0:Lcom/android/server/accessibility/AccessibilityManagerService;
+ 
+     invoke-static {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$fgetmContext(Lcom/android/server/accessibility/AccessibilityManagerService;)Landroid/content/Context;
+@@ -85,37 +113,50 @@
+ 
+     move-result-object p0
+ 
+-    const-string v3, "accessibility_display_inversion_enabled"
++    const-string v5, "aod_show_state"
+ 
+     iget p1, p1, Lcom/android/server/accessibility/AccessibilityUserState;->mUserId:I
+ 
+-    invoke-static {p0, v3, v4, p1}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
++    invoke-static {p0, v5, v4, p1}, Landroid/provider/Settings$System;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+ 
+     move-result p0
+ 
+-    if-eqz p0, :cond_1
++    if-eqz p0, :cond_2
+ 
+-    move v4, v2
++    goto :goto_2
+ 
+-    :cond_1
+-    if-nez v1, :cond_3
++    :cond_2
++    move v2, v4
++
++    :goto_2
++    if-eqz v2, :cond_3
++
++    if-eqz v3, :cond_3
++
++    goto :goto_3
+ 
+-    if-eqz v4, :cond_2
++    :cond_3
++    move v4, v3
++
++    :goto_3
++    if-nez v1, :cond_5
++
++    if-eqz v4, :cond_4
+ 
+     invoke-static {}, Lcom/android/server/accessibility/AccessibilityManagerService;->-$$Nest$sfgetMATRIX_INVERT_COLOR()[F
+ 
+     move-result-object p0
+ 
+-    goto :goto_1
++    goto :goto_4
+ 
+-    :cond_2
++    :cond_4
+     const/4 p0, 0x0
+ 
+-    :goto_1
++    :goto_4
+     const/16 p1, 0x12c
+ 
+     invoke-virtual {v0, p1, p0}, Lcom/android/server/display/color/DisplayTransformManager;->setColorMatrix(I[F)V
+ 
+-    :cond_3
++    :cond_5
+     return-void
+ .end method
+diff --git a/smali/com/android/server/accessibility/AccessibilityManagerService.smali b/smali/com/android/server/accessibility/AccessibilityManagerService.smali
+index f1fafbaa..2d7d380d 100644
+--- a/smali/com/android/server/accessibility/AccessibilityManagerService.smali
++++ b/smali/com/android/server/accessibility/AccessibilityManagerService.smali
+@@ -51,6 +51,8 @@
+ 
+ .field public final mColorInversionStateUri:Landroid/net/Uri;
+ 
++.field public mColorLensView:Landroid/view/View;
++
+ .field public final mContext:Landroid/content/Context;
+ 
+ .field public mCurrentUserId:I
+@@ -989,6 +991,14 @@
+     return-void
+ .end method
+ 
++.method public static bridge synthetic -$$Nest$menableColorLens(Lcom/android/server/accessibility/AccessibilityManagerService;)V
++    .locals 0
++
++    invoke-virtual {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->enableColorLens()V
++
++    return-void
++.end method
++
+ .method public static bridge synthetic -$$Nest$menableColorRelumino(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+     .locals 0
+ 
+@@ -1027,16 +1037,6 @@
+     return-object p0
+ .end method
+ 
+-.method public static bridge synthetic -$$Nest$misDexDualMonitorDisplay(Lcom/android/server/accessibility/AccessibilityManagerService;)Z
+-    .locals 0
+-
+-    invoke-virtual {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->isDexDualMonitorDisplay()Z
+-
+-    move-result p0
+-
+-    return p0
+-.end method
+-
+ .method public static bridge synthetic -$$Nest$mmigrateAccessibilityButtonSettingsIfNecessaryLocked(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityUserState;Ljava/lang/String;I)V
+     .locals 0
+ 
+@@ -1343,22 +1343,6 @@
+     return-void
+ .end method
+ 
+-.method public static bridge synthetic -$$Nest$msetColorAdjustment(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/content/Context;)V
+-    .locals 0
+-
+-    invoke-virtual {p0, p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->setColorAdjustment(Landroid/content/Context;)V
+-
+-    return-void
+-.end method
+-
+-.method public static bridge synthetic -$$Nest$msetColorLensState(Lcom/android/server/accessibility/AccessibilityManagerService;Landroid/content/Context;)V
+-    .locals 0
+-
+-    invoke-virtual {p0, p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->setColorLensState(Landroid/content/Context;)V
+-
+-    return-void
+-.end method
+-
+ .method public static bridge synthetic -$$Nest$msetNonA11yToolNotificationToMatchSafetyCenter(Lcom/android/server/accessibility/AccessibilityManagerService;)V
+     .locals 0
+ 
+@@ -1383,6 +1367,14 @@
+     return-void
+ .end method
+ 
++.method public static bridge synthetic -$$Nest$mupdateColorLensValue(Lcom/android/server/accessibility/AccessibilityManagerService;)V
++    .locals 0
++
++    invoke-virtual {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->updateColorLensValue()V
++
++    return-void
++.end method
++
+ .method public static bridge synthetic -$$Nest$mupdateMagnificationCapabilitiesSettingsChangeLocked(Lcom/android/server/accessibility/AccessibilityManagerService;Lcom/android/server/accessibility/AccessibilityUserState;)V
+     .locals 0
+ 
+@@ -4897,6 +4889,138 @@
+     return-void
+ .end method
+ 
++.method public final enableColorLens()V
++    .locals 9
++
++    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
++
++    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++
++    move-result-object v0
++
++    const-string v1, "color_lens_switch"
++
++    const/4 v2, 0x0
++
++    invoke-static {v0, v1, v2}, Landroid/provider/Settings$Secure;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
++
++    move-result v0
++
++    if-eqz v0, :cond_0
++
++    const/4 v2, 0x1
++
++    :cond_0
++    new-instance v0, Ljava/lang/StringBuilder;
++
++    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
++
++    const-string v1, "enableColorLens colorLensEnable : "
++
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
++
++    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object v0
++
++    const-string v1, "AccessibilityManagerService"
++
++    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
++
++    const-string/jumbo v0, "window"
++
++    if-eqz v2, :cond_1
++
++    new-instance v1, Landroid/view/WindowManager$LayoutParams;
++
++    const/4 v4, -0x1
++
++    const/4 v5, -0x1
++
++    const/16 v6, 0x7df
++
++    const/16 v7, 0x538
++
++    const/4 v8, -0x3
++
++    move-object v3, v1
++
++    invoke-direct/range {v3 .. v8}, Landroid/view/WindowManager$LayoutParams;-><init>(IIIII)V
++
++    iget v2, v1, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
++
++    or-int/lit8 v2, v2, 0x10
++
++    iput v2, v1, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
++
++    const/4 v2, 0x3
++
++    iput v2, v1, Landroid/view/WindowManager$LayoutParams;->layoutInDisplayCutoutMode:I
++
++    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mColorLensView:Landroid/view/View;
++
++    if-nez v2, :cond_2
++
++    new-instance v2, Landroid/widget/FrameLayout;
++
++    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
++
++    invoke-direct {v2, v3}, Landroid/widget/FrameLayout;-><init>(Landroid/content/Context;)V
++
++    iput-object v2, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mColorLensView:Landroid/view/View;
++
++    const/16 v3, 0x200
++
++    invoke-virtual {v2, v3}, Landroid/view/View;->setSystemUiVisibility(I)V
++
++    invoke-virtual {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->updateColorLensValue()V
++
++    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
++
++    invoke-virtual {v2, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
++
++    move-result-object v0
++
++    check-cast v0, Landroid/view/WindowManager;
++
++    iget-object p0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mColorLensView:Landroid/view/View;
++
++    invoke-interface {v0, p0, v1}, Landroid/view/WindowManager;->addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
++
++    goto :goto_0
++
++    :cond_1
++    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mColorLensView:Landroid/view/View;
++
++    if-eqz v1, :cond_2
++
++    const/4 v2, 0x4
++
++    invoke-virtual {v1, v2}, Landroid/view/View;->setVisibility(I)V
++
++    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
++
++    invoke-virtual {v1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
++
++    move-result-object v0
++
++    check-cast v0, Landroid/view/WindowManager;
++
++    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mColorLensView:Landroid/view/View;
++
++    invoke-interface {v0, v1}, Landroid/view/WindowManager;->removeView(Landroid/view/View;)V
++
++    const/4 v0, 0x0
++
++    iput-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mColorLensView:Landroid/view/View;
++
++    :cond_2
++    :goto_0
++    return-void
++.end method
++
+ .method public final enableColorRelumino()V
+     .locals 7
+ 
+@@ -5466,6 +5590,228 @@
+     return p0
+ .end method
+ 
++.method public final getColorLensOpacityValue(II)I
++    .locals 12
++
++    const/16 p0, 0x9
++
++    new-array v0, p0, [I
++
++    fill-array-data v0, :array_0
++
++    new-array v1, p0, [I
++
++    fill-array-data v1, :array_1
++
++    new-array v2, p0, [I
++
++    fill-array-data v2, :array_2
++
++    new-array v3, p0, [I
++
++    fill-array-data v3, :array_3
++
++    new-array v4, p0, [I
++
++    fill-array-data v4, :array_4
++
++    new-array v5, p0, [I
++
++    fill-array-data v5, :array_5
++
++    new-array v6, p0, [I
++
++    fill-array-data v6, :array_6
++
++    new-array v7, p0, [I
++
++    fill-array-data v7, :array_7
++
++    new-array v8, p0, [I
++
++    fill-array-data v8, :array_8
++
++    new-array v9, p0, [I
++
++    fill-array-data v9, :array_9
++
++    new-array v10, p0, [I
++
++    fill-array-data v10, :array_a
++
++    new-array v11, p0, [I
++
++    fill-array-data v11, :array_b
++
++    filled-new-array/range {v0 .. v11}, [[I
++
++    move-result-object p0
++
++    aget-object p0, p0, p1
++
++    aget p0, p0, p2
++
++    return p0
++
++    nop
++
++    :array_0
++    .array-data 4
++        0x2
++        0x3
++        0x5
++        0x6
++        0x8
++        0x9
++        0xb
++        0xc
++        0xd
++    .end array-data
++
++    :array_1
++    .array-data 4
++        0x1
++        0x3
++        0x4
++        0x6
++        0x7
++        0x8
++        0x9
++        0xb
++        0xc
++    .end array-data
++
++    :array_2
++    .array-data 4
++        0x1
++        0x3
++        0x4
++        0x5
++        0x7
++        0x8
++        0x9
++        0xa
++        0xb
++    .end array-data
++
++    :array_3
++    .array-data 4
++        0x2
++        0x3
++        0x5
++        0x6
++        0x7
++        0x8
++        0x9
++        0xb
++        0xc
++    .end array-data
++
++    :array_4
++    .array-data 4
++        0x2
++        0x3
++        0x4
++        0x5
++        0x7
++        0x8
++        0x9
++        0xa
++        0xc
++    .end array-data
++
++    :array_5
++    .array-data 4
++        0x2
++        0x3
++        0x4
++        0x6
++        0x7
++        0x8
++        0xa
++        0xb
++        0xc
++    .end array-data
++
++    :array_6
++    .array-data 4
++        0x2
++        0x3
++        0x4
++        0x6
++        0x7
++        0x8
++        0x9
++        0xa
++        0xb
++    .end array-data
++
++    :array_7
++    .array-data 4
++        0x2
++        0x4
++        0x5
++        0x7
++        0x8
++        0x9
++        0xa
++        0xb
++        0xc
++    .end array-data
++
++    :array_8
++    .array-data 4
++        0x2
++        0x4
++        0x5
++        0x6
++        0x7
++        0x9
++        0xa
++        0xb
++        0xc
++    .end array-data
++
++    :array_9
++    .array-data 4
++        0x2
++        0x3
++        0x4
++        0x6
++        0x7
++        0x9
++        0xa
++        0xb
++        0xc
++    .end array-data
++
++    :array_a
++    .array-data 4
++        0x1
++        0x3
++        0x4
++        0x5
++        0x6
++        0x7
++        0x9
++        0xa
++        0xb
++    .end array-data
++
++    :array_b
++    .array-data 4
++        0x1
++        0x2
++        0x4
++        0x5
++        0x7
++        0x8
++        0x9
++        0xa
++        0xc
++    .end array-data
++.end method
++
+ .method public getContext()Landroid/content/Context;
+     .locals 0
+ 
+@@ -14312,46 +14658,9 @@
+ .end method
+ 
+ .method public semDisableMdnieColorFilter()Z
+-    .locals 4
+-
+-    const-string/jumbo v0, "semDisableMdnieColorFilter "
+-
+-    const-string v1, "AccessibilityManagerService"
+-
+-    invoke-static {v1, v0}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mSecurityPolicy:Lcom/android/server/accessibility/AccessibilitySecurityPolicy;
+-
+-    const-string v2, "com.samsung.android.permission.CHANGE_DISPLAY_COLOR"
+-
+-    const-string/jumbo v3, "semDisableMdnieColorFilter"
+-
+-    invoke-virtual {v0, v2, v3}, Lcom/android/server/accessibility/AccessibilitySecurityPolicy;->enforceCallingPermission(Ljava/lang/String;Ljava/lang/String;)V
+-
+-    iget-object p0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+-
+-    const-string/jumbo v0, "mDNIe"
+-
+-    invoke-virtual {p0, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+-
+-    move-result-object p0
+-
+-    check-cast p0, Lcom/samsung/android/hardware/display/SemMdnieManager;
+-
+-    const/4 v0, 0x0
+-
+-    if-nez p0, :cond_0
+-
+-    const-string p0, "SemMdnieManager is null."
+-
+-    invoke-static {v1, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    return v0
+-
+-    :cond_0
+-    invoke-virtual {p0, v0, v0, v0}, Lcom/samsung/android/hardware/display/SemMdnieManager;->setColorVision(ZII)Z
++    .locals 0
+ 
+-    move-result p0
++    const/4 p0, 0x1
+ 
+     return p0
+ .end method
+@@ -14400,71 +14709,16 @@
+ .end method
+ 
+ .method public semEnableMdnieColorFilter(II)Z
+-    .locals 5
+-
+-    const/4 v0, 0x0
++    .locals 0
+ 
+     if-gez p2, :cond_0
+ 
+-    return v0
++    const/4 p0, 0x0
+ 
+-    :cond_0
+-    new-instance v1, Ljava/lang/StringBuilder;
++    return p0
+ 
+-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+-
+-    const-string/jumbo v2, "semEnableMdnieColorFilter "
+-
+-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    const-string v2, ", "
+-
+-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v1
+-
+-    const-string v2, "AccessibilityManagerService"
+-
+-    invoke-static {v2, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mSecurityPolicy:Lcom/android/server/accessibility/AccessibilitySecurityPolicy;
+-
+-    const-string v3, "com.samsung.android.permission.CHANGE_DISPLAY_COLOR"
+-
+-    const-string/jumbo v4, "semEnableMdnieColorFilter"
+-
+-    invoke-virtual {v1, v3, v4}, Lcom/android/server/accessibility/AccessibilitySecurityPolicy;->enforceCallingPermission(Ljava/lang/String;Ljava/lang/String;)V
+-
+-    iget-object p0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+-
+-    const-string/jumbo v1, "mDNIe"
+-
+-    invoke-virtual {p0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+-
+-    move-result-object p0
+-
+-    check-cast p0, Lcom/samsung/android/hardware/display/SemMdnieManager;
+-
+-    if-nez p0, :cond_1
+-
+-    const-string p0, "SemMdnieManager is null."
+-
+-    invoke-static {v2, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    return v0
+-
+-    :cond_1
+-    const/4 v0, 0x1
+-
+-    invoke-virtual {p0, v0, p1, p2}, Lcom/samsung/android/hardware/display/SemMdnieManager;->setColorVision(ZII)Z
+-
+-    move-result p0
++    :cond_0
++    const/4 p0, 0x1
+ 
+     return p0
+ .end method
+@@ -15396,7 +15650,7 @@
+ .end method
+ 
+ .method public semToggleDarkScreenMode()V
+-    .locals 7
++    .locals 3
+ 
+     iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mSecurityPolicy:Lcom/android/server/accessibility/AccessibilitySecurityPolicy;
+ 
+@@ -15406,11 +15660,11 @@
+ 
+     invoke-virtual {v0, v1, v2}, Lcom/android/server/accessibility/AccessibilitySecurityPolicy;->enforceCallingPermission(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    const-string/jumbo v0, "semToggleDarkScreenMode()"
++    const-string v0, "AccessibilityManagerService"
+ 
+-    const-string v1, "AccessibilityManagerService"
++    const-string/jumbo v1, "semToggleDarkScreenMode()"
+ 
+-    invoke-static {v1, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
++    invoke-static {v0, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+ 
+     invoke-virtual {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->isScreenReaderEnabled()Z
+ 
+@@ -15427,174 +15681,62 @@
+     :cond_0
+     iget-boolean v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mCurtainModeIsRunning:Z
+ 
+-    const/4 v2, 0x1
+-
+-    xor-int/2addr v0, v2
++    xor-int/lit8 v0, v0, 0x1
+ 
+     iput-boolean v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mCurtainModeIsRunning:Z
+ 
+     iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+ 
+-    const v3, 0x1040c38
++    const v1, 0x1040c38
+ 
+-    invoke-virtual {v0, v3}, Landroid/content/Context;->getString(I)Ljava/lang/String;
++    invoke-virtual {v0, v1}, Landroid/content/Context;->getString(I)Ljava/lang/String;
+ 
+     move-result-object v0
+ 
+-    iget-boolean v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mCurtainModeIsRunning:Z
++    iget-boolean v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mCurtainModeIsRunning:Z
+ 
+-    if-eqz v3, :cond_1
++    if-eqz v1, :cond_1
+ 
+-    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
++    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+ 
+-    const v4, 0x1040c37
++    const v2, 0x1040c37
+ 
+     filled-new-array {v0}, [Ljava/lang/Object;
+ 
+     move-result-object v0
+ 
+-    invoke-virtual {v3, v4, v0}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
++    invoke-virtual {v1, v2, v0}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+ 
+     move-result-object v0
+ 
+     goto :goto_0
+ 
+     :cond_1
+-    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
++    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+ 
+-    const v4, 0x1040c36
++    const v2, 0x1040c36
+ 
+     filled-new-array {v0}, [Ljava/lang/Object;
+ 
+     move-result-object v0
+ 
+-    invoke-virtual {v3, v4, v0}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
++    invoke-virtual {v1, v2, v0}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+ 
+     move-result-object v0
+ 
+     :goto_0
+     invoke-virtual {p0, v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->darkScreenWarning(Ljava/lang/String;)V
+ 
+-    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+-
+-    const-string/jumbo v3, "mDNIe"
+-
+-    invoke-virtual {v0, v3}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+-
+-    move-result-object v0
+-
+-    check-cast v0, Lcom/samsung/android/hardware/display/SemMdnieManager;
+-
+-    if-nez v0, :cond_2
+-
+-    const-string p0, "SemMdnieManager is null."
+-
+-    invoke-static {v1, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    return-void
+-
+-    :cond_2
+-    iget-boolean v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mCurtainModeIsRunning:Z
+-
+-    invoke-virtual {v0, v1}, Lcom/samsung/android/hardware/display/SemMdnieManager;->setmDNIeScreenCurtain(Z)Z
+-
+-    iget-boolean v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mCurtainModeIsRunning:Z
+-
+-    if-nez v1, :cond_7
+-
+-    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+-
+-    invoke-virtual {v1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object v1
+-
+-    const-string v3, "color_blind"
+-
+-    const/4 v4, 0x0
+-
+-    const/4 v5, -0x2
+-
+-    invoke-static {v1, v3, v4, v5}, Landroid/provider/Settings$System;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result v1
+-
+-    if-ne v1, v2, :cond_3
+-
+-    move v1, v2
+-
+-    goto :goto_1
+-
+-    :cond_3
+-    move v1, v4
+-
+-    :goto_1
+-    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+-
+-    invoke-virtual {v3}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object v3
+-
+-    const-string v6, "greyscale_mode"
+-
+-    invoke-static {v3, v6, v4, v5}, Landroid/provider/Settings$System;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result v3
+-
+-    if-ne v3, v2, :cond_4
+-
+-    move v4, v2
+-
+-    :cond_4
+-    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+-
+-    invoke-static {v3}, Lcom/samsung/android/emergencymode/SemEmergencyManager;->isEmergencyMode(Landroid/content/Context;)Z
+-
+-    move-result v3
+-
+-    if-eqz v3, :cond_5
+-
+-    return-void
+-
+-    :cond_5
+-    if-eqz v4, :cond_6
+-
+-    const/4 p0, 0x4
+-
+-    invoke-virtual {v0, p0, v2}, Lcom/samsung/android/hardware/display/SemMdnieManager;->setmDNIeAccessibilityMode(IZ)Z
+-
+-    goto :goto_2
+-
+-    :cond_6
+-    if-eqz v1, :cond_7
+-
+-    :try_start_0
+-    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+-
+-    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object v0
+-
+-    const-string v1, "color_blind_user_parameter"
+-
+-    const/4 v3, 0x0
+-
+-    invoke-static {v0, v1, v3, v5}, Landroid/provider/Settings$Secure;->getFloatForUser(Landroid/content/ContentResolver;Ljava/lang/String;FI)F
+-
+-    move-result v0
++    iget-object p0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+ 
+-    invoke-virtual {p0, v2, v0}, Lcom/android/server/accessibility/AccessibilityManagerService;->semSetColorBlind(ZF)Z
+-    :try_end_0
+-    .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
++    const-string/jumbo v0, "mDNIe"
+ 
+-    goto :goto_2
++    invoke-virtual {p0, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+ 
+-    :catch_0
+-    move-exception p0
++    move-result-object p0
+ 
+-    invoke-virtual {p0}, Ljava/lang/Exception;->printStackTrace()V
++    check-cast p0, Lcom/samsung/android/hardware/display/SemMdnieManager;
+ 
+-    :cond_7
+-    :goto_2
+     return-void
+ .end method
+ 
+@@ -17111,159 +17253,6 @@
+     throw p0
+ .end method
+ 
+-.method public final setColorAdjustment(Landroid/content/Context;)V
+-    .locals 6
+-
+-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object v0
+-
+-    const-string v1, "color_blind"
+-
+-    const/4 v2, 0x0
+-
+-    const/4 v3, -0x2
+-
+-    invoke-static {v0, v1, v2, v3}, Landroid/provider/Settings$System;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result v0
+-
+-    const/4 v1, 0x1
+-
+-    if-ne v0, v1, :cond_0
+-
+-    move v0, v1
+-
+-    goto :goto_0
+-
+-    :cond_0
+-    move v0, v2
+-
+-    :goto_0
+-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object p1
+-
+-    const-string v4, "color_adjustment_type"
+-
+-    const/4 v5, 0x2
+-
+-    invoke-static {p1, v4, v5, v3}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result p1
+-
+-    if-nez p1, :cond_2
+-
+-    if-eqz v0, :cond_1
+-
+-    const/4 p1, 0x4
+-
+-    invoke-virtual {p0, p1, v1}, Lcom/android/server/accessibility/AccessibilityManagerService;->semSetMdnieAccessibilityMode(IZ)Z
+-
+-    goto :goto_1
+-
+-    :cond_1
+-    invoke-virtual {p0, v1, v2}, Lcom/android/server/accessibility/AccessibilityManagerService;->semSetMdnieAccessibilityMode(IZ)Z
+-
+-    goto :goto_1
+-
+-    :cond_2
+-    iget-object p1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
+-
+-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object p1
+-
+-    const-string v4, "color_blind_user_parameter"
+-
+-    const/4 v5, 0x0
+-
+-    invoke-static {p1, v4, v5, v3}, Landroid/provider/Settings$Secure;->getFloatForUser(Landroid/content/ContentResolver;Ljava/lang/String;FI)F
+-
+-    move-result p1
+-
+-    const/high16 v3, 0x41200000    # 10.0f
+-
+-    mul-float/2addr p1, v3
+-
+-    invoke-virtual {p0, v1, v2}, Lcom/android/server/accessibility/AccessibilityManagerService;->semSetMdnieAccessibilityMode(IZ)Z
+-
+-    :try_start_0
+-    invoke-virtual {p0, v0, p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->semSetColorBlind(ZF)Z
+-    :try_end_0
+-    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_0} :catch_0
+-
+-    goto :goto_1
+-
+-    :catch_0
+-    move-exception p0
+-
+-    invoke-virtual {p0}, Landroid/os/RemoteException;->printStackTrace()V
+-
+-    :goto_1
+-    return-void
+-.end method
+-
+-.method public final setColorLensState(Landroid/content/Context;)V
+-    .locals 5
+-
+-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object v0
+-
+-    const-string v1, "color_lens_switch"
+-
+-    const/4 v2, 0x0
+-
+-    const/4 v3, -0x2
+-
+-    invoke-static {v0, v1, v2, v3}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result v0
+-
+-    const/4 v1, 0x1
+-
+-    if-ne v0, v1, :cond_0
+-
+-    goto :goto_0
+-
+-    :cond_0
+-    move v1, v2
+-
+-    :goto_0
+-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object v0
+-
+-    const-string v4, "color_lens_type"
+-
+-    invoke-static {v0, v4, v2, v3}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result v0
+-
+-    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object p1
+-
+-    const-string v4, "color_lens_opacity"
+-
+-    invoke-static {p1, v4, v2, v3}, Landroid/provider/Settings$Secure;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result p1
+-
+-    if-eqz v1, :cond_1
+-
+-    invoke-virtual {p0, v0, p1}, Lcom/android/server/accessibility/AccessibilityManagerService;->semEnableMdnieColorFilter(II)Z
+-
+-    goto :goto_1
+-
+-    :cond_1
+-    invoke-virtual {p0}, Lcom/android/server/accessibility/AccessibilityManagerService;->semDisableMdnieColorFilter()Z
+-
+-    :goto_1
+-    return-void
+-.end method
+-
+ .method public setGestureDetectionPassthroughRegion(ILandroid/graphics/Region;)V
+     .locals 2
+ 
+@@ -19038,6 +19027,99 @@
+     throw p0
+ .end method
+ 
++.method public final updateColorLensValue()V
++    .locals 4
++
++    iget-object v0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
++
++    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++
++    move-result-object v0
++
++    const-string v1, "color_lens_type"
++
++    const/4 v2, 0x0
++
++    invoke-static {v0, v1, v2}, Landroid/provider/Settings$Secure;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
++
++    move-result v0
++
++    iget-object v1, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
++
++    invoke-virtual {v1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++
++    move-result-object v1
++
++    const-string v3, "color_lens_opacity"
++
++    invoke-static {v1, v3, v2}, Landroid/provider/Settings$Secure;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
++
++    move-result v1
++
++    new-instance v2, Ljava/lang/StringBuilder;
++
++    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
++
++    const-string/jumbo v3, "updateColorLensValue colorLensType : "
++
++    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++
++    const-string v3, " colorLensOpacity : "
++
++    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++
++    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object v2
++
++    const-string v3, "AccessibilityManagerService"
++
++    invoke-static {v3, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
++
++    iget-object v2, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mContext:Landroid/content/Context;
++
++    invoke-virtual {v2}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
++
++    move-result-object v2
++
++    const v3, 0x107003c
++
++    invoke-virtual {v2, v3}, Landroid/content/res/Resources;->getIntArray(I)[I
++
++    move-result-object v2
++
++    iget-object v3, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mColorLensView:Landroid/view/View;
++
++    if-eqz v3, :cond_0
++
++    invoke-virtual {p0, v0, v1}, Lcom/android/server/accessibility/AccessibilityManagerService;->getColorLensOpacityValue(II)I
++
++    move-result v1
++
++    mul-int/lit8 v1, v1, 0x5
++
++    add-int/lit8 v1, v1, 0x14
++
++    mul-int/lit8 v1, v1, 0x2
++
++    aget v0, v2, v0
++
++    invoke-static {v0, v1}, Lcom/android/internal/graphics/ColorUtils;->setAlphaComponent(II)I
++
++    move-result v0
++
++    iget-object p0, p0, Lcom/android/server/accessibility/AccessibilityManagerService;->mColorLensView:Landroid/view/View;
++
++    invoke-virtual {p0, v0}, Landroid/view/View;->setBackgroundColor(I)V
++
++    :cond_0
++    return-void
++.end method
++
+ .method public final updateFilterKeyEventsLocked(Lcom/android/server/accessibility/AccessibilityUserState;)V
+     .locals 4
+ 
+diff --git a/smali/com/samsung/android/hardware/display/SemMdnieManagerService.smali b/smali/com/samsung/android/hardware/display/SemMdnieManagerService.smali
+index ed39a90f..ee506efb 100644
+--- a/smali/com/samsung/android/hardware/display/SemMdnieManagerService.smali
++++ b/smali/com/samsung/android/hardware/display/SemMdnieManagerService.smali
+@@ -1924,444 +1924,6 @@
+     return v0
+ .end method
+ 
+-.method public static sysfsWrite_CB(Ljava/lang/String;I[I)Z
+-    .locals 4
+-
+-    new-instance v0, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+-
+-    invoke-static {p1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+-
+-    move-result-object p1
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const-string p1, " "
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v1, 0x0
+-
+-    aget v2, p2, v1
+-
+-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v2
+-
+-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v2, 0x1
+-
+-    aget v3, p2, v2
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x2
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x3
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x4
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x5
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x6
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x7
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/16 p1, 0x8
+-
+-    aget p1, p2, p1
+-
+-    invoke-static {p1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object p1
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object p1
+-
+-    const/4 p2, 0x0
+-
+-    :try_start_0
+-    new-instance v0, Ljava/io/FileOutputStream;
+-
+-    new-instance v3, Ljava/io/File;
+-
+-    invoke-direct {v3, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+-
+-    invoke-direct {v0, v3}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
+-    :try_end_0
+-    .catch Ljava/io/FileNotFoundException; {:try_start_0 .. :try_end_0} :catch_2
+-    .catch Ljava/io/IOException; {:try_start_0 .. :try_end_0} :catch_1
+-
+-    :try_start_1
+-    const-string p0, "UTF-8"
+-
+-    invoke-static {p0}, Ljava/nio/charset/Charset;->forName(Ljava/lang/String;)Ljava/nio/charset/Charset;
+-
+-    move-result-object p0
+-
+-    invoke-virtual {p1, p0}, Ljava/lang/String;->getBytes(Ljava/nio/charset/Charset;)[B
+-
+-    move-result-object p0
+-
+-    invoke-virtual {v0, p0}, Ljava/io/FileOutputStream;->write([B)V
+-
+-    invoke-virtual {v0}, Ljava/io/FileOutputStream;->close()V
+-    :try_end_1
+-    .catch Ljava/io/IOException; {:try_start_1 .. :try_end_1} :catch_0
+-
+-    return v2
+-
+-    :catch_0
+-    move-exception p0
+-
+-    move-object p2, v0
+-
+-    goto :goto_0
+-
+-    :catch_1
+-    move-exception p0
+-
+-    goto :goto_0
+-
+-    :catch_2
+-    move-exception p0
+-
+-    :try_start_2
+-    invoke-virtual {p0}, Ljava/io/FileNotFoundException;->printStackTrace()V
+-    :try_end_2
+-    .catch Ljava/io/IOException; {:try_start_2 .. :try_end_2} :catch_1
+-
+-    return v1
+-
+-    :goto_0
+-    invoke-virtual {p0}, Ljava/io/IOException;->printStackTrace()V
+-
+-    :try_start_3
+-    invoke-virtual {p2}, Ljava/io/FileOutputStream;->close()V
+-    :try_end_3
+-    .catch Ljava/lang/Exception; {:try_start_3 .. :try_end_3} :catch_3
+-
+-    goto :goto_1
+-
+-    :catch_3
+-    move-exception p0
+-
+-    invoke-virtual {p0}, Ljava/lang/Exception;->printStackTrace()V
+-
+-    :goto_1
+-    return v1
+-.end method
+-
+-.method public static sysfsWrite_CB_HBM(Ljava/lang/String;I[I)Z
+-    .locals 4
+-
+-    new-instance v0, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+-
+-    invoke-static {p1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+-
+-    move-result-object p1
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const-string p1, " "
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v1, 0x0
+-
+-    aget v2, p2, v1
+-
+-    invoke-static {v2}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v2
+-
+-    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v2, 0x1
+-
+-    aget v3, p2, v2
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x2
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x3
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x4
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x5
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x6
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/4 v3, 0x7
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/16 v3, 0x8
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/16 v3, 0x9
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/16 v3, 0xa
+-
+-    aget v3, p2, v3
+-
+-    invoke-static {v3}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object v3
+-
+-    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const/16 p1, 0xb
+-
+-    aget p1, p2, p1
+-
+-    invoke-static {p1}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
+-
+-    move-result-object p1
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object p1
+-
+-    const/4 p2, 0x0
+-
+-    :try_start_0
+-    new-instance v0, Ljava/io/FileOutputStream;
+-
+-    new-instance v3, Ljava/io/File;
+-
+-    invoke-direct {v3, p0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+-
+-    invoke-direct {v0, v3}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
+-    :try_end_0
+-    .catch Ljava/io/FileNotFoundException; {:try_start_0 .. :try_end_0} :catch_2
+-    .catch Ljava/io/IOException; {:try_start_0 .. :try_end_0} :catch_1
+-
+-    :try_start_1
+-    const-string p0, "UTF-8"
+-
+-    invoke-static {p0}, Ljava/nio/charset/Charset;->forName(Ljava/lang/String;)Ljava/nio/charset/Charset;
+-
+-    move-result-object p0
+-
+-    invoke-virtual {p1, p0}, Ljava/lang/String;->getBytes(Ljava/nio/charset/Charset;)[B
+-
+-    move-result-object p0
+-
+-    invoke-virtual {v0, p0}, Ljava/io/FileOutputStream;->write([B)V
+-
+-    invoke-virtual {v0}, Ljava/io/FileOutputStream;->close()V
+-    :try_end_1
+-    .catch Ljava/io/IOException; {:try_start_1 .. :try_end_1} :catch_0
+-
+-    return v2
+-
+-    :catch_0
+-    move-exception p0
+-
+-    move-object p2, v0
+-
+-    goto :goto_0
+-
+-    :catch_1
+-    move-exception p0
+-
+-    goto :goto_0
+-
+-    :catch_2
+-    move-exception p0
+-
+-    :try_start_2
+-    invoke-virtual {p0}, Ljava/io/FileNotFoundException;->printStackTrace()V
+-    :try_end_2
+-    .catch Ljava/io/IOException; {:try_start_2 .. :try_end_2} :catch_1
+-
+-    return v1
+-
+-    :goto_0
+-    invoke-virtual {p0}, Ljava/io/IOException;->printStackTrace()V
+-
+-    :try_start_3
+-    invoke-virtual {p2}, Ljava/io/FileOutputStream;->close()V
+-    :try_end_3
+-    .catch Ljava/lang/Exception; {:try_start_3 .. :try_end_3} :catch_3
+-
+-    goto :goto_1
+-
+-    :catch_3
+-    move-exception p0
+-
+-    invoke-virtual {p0}, Ljava/lang/Exception;->printStackTrace()V
+-
+-    :goto_1
+-    return v1
+-.end method
+-
+ 
+ # virtual methods
+ .method public afpcDataApply()Z
+@@ -5675,454 +5237,238 @@
+ .end method
+ 
+ .method public setWhiteRGB(III)Z
+-    .locals 2
+-
+-    iget-boolean v0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mEnvironmentAdaptiveDisplaySupported:Z
+-
+-    if-eqz v0, :cond_2
+-
+-    iget-boolean v0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mEnvironmentAdaptiveDisplayEnabled:Z
+-
+-    if-eqz v0, :cond_2
+-
+-    if-gtz p1, :cond_2
+-
+-    const/16 v0, -0xfa
+-
+-    if-lt p1, v0, :cond_2
+-
+-    if-gtz p2, :cond_2
+-
+-    if-lt p2, v0, :cond_2
+-
+-    if-gtz p3, :cond_2
+-
+-    if-lt p3, v0, :cond_2
+-
+-    iget-object p0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mLock:Ljava/lang/Object;
+-
+-    monitor-enter p0
+-
+-    :try_start_0
+-    new-instance v0, Ljava/io/File;
+-
+-    const-string v1, "/sys/class/mdnie/mdnie/whiteRGB"
+-
+-    invoke-direct {v0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v0}, Ljava/io/File;->exists()Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_0
+-
+-    new-instance v0, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+-
+-    invoke-static {p1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+-
+-    move-result-object v1
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const-string v1, " "
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-static {p2}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+-
+-    move-result-object v1
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const-string v1, " "
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-static {p3}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+-
+-    move-result-object v1
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    const-string v1, "/sys/class/mdnie/mdnie/whiteRGB"
+-
+-    invoke-static {v1, v0}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWriteSting(Ljava/lang/String;Ljava/lang/String;)Z
+-
+-    :cond_0
+-    new-instance v0, Ljava/io/File;
+-
+-    const-string v1, "/sys/class/mdnie/mdnie1/whiteRGB"
+-
+-    invoke-direct {v0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v0}, Ljava/io/File;->exists()Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_1
+-
+-    new-instance v0, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+-
+-    invoke-static {p1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+-
+-    move-result-object p1
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const-string p1, " "
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-static {p2}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+-
+-    move-result-object p1
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    const-string p1, " "
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-static {p3}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+-
+-    move-result-object p1
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object p1
+-
+-    const-string p2, "/sys/class/mdnie/mdnie1/whiteRGB"
+-
+-    invoke-static {p2, p1}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWriteSting(Ljava/lang/String;Ljava/lang/String;)Z
+-
+-    :cond_1
+-    monitor-exit p0
+-
+-    const/4 p0, 0x1
+-
+-    return p0
+-
+-    :catchall_0
+-    move-exception p1
+-
+-    monitor-exit p0
+-    :try_end_0
+-    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+-
+-    throw p1
+-
+-    :cond_2
+-    const/4 p0, 0x0
+-
+-    return p0
+-.end method
+-
+-.method public setmDNIeAccessibilityMode(IZ)Z
+-    .locals 3
+-
+-    iget-object v0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mContext:Landroid/content/Context;
+-
+-    const-string v1, "com.samsung.android.permission.CHANGE_DISPLAY_COLOR"
+-
+-    const-string/jumbo v2, "setmDNIeAccessibilityMode"
+-
+-    invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+-
+-    new-instance v0, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+-
+-    const-string/jumbo v1, "setmDNIeAccessibilityMode("
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+-
+-    const-string v1, ", "
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+-
+-    const-string v1, ")"
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    const-string v1, "SemMdnieManagerService"
+-
+-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    iget-boolean p0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mCurtainModeIsRunning:Z
+-
+-    const/4 v0, 0x0
+-
+-    if-nez p0, :cond_6
+-
+-    const/16 p0, 0xa
++    .locals 2
+ 
+-    if-eq p1, p0, :cond_5
++    iget-boolean v0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mEnvironmentAdaptiveDisplaySupported:Z
+ 
+-    new-instance p0, Ljava/io/File;
++    if-eqz v0, :cond_2
+ 
+-    const-string v1, "/sys/class/mdnie/mdnie1/accessibility"
++    iget-boolean v0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mEnvironmentAdaptiveDisplayEnabled:Z
+ 
+-    invoke-direct {p0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
++    if-eqz v0, :cond_2
+ 
+-    invoke-virtual {p0}, Ljava/io/File;->exists()Z
++    if-gtz p1, :cond_2
+ 
+-    move-result p0
++    const/16 v0, -0xfa
+ 
+-    const-string v2, "/sys/class/mdnie/mdnie/accessibility"
++    if-lt p1, v0, :cond_2
+ 
+-    if-eqz p0, :cond_3
++    if-gtz p2, :cond_2
+ 
+-    if-eqz p2, :cond_0
++    if-lt p2, v0, :cond_2
+ 
+-    move p0, p1
++    if-gtz p3, :cond_2
+ 
+-    goto :goto_0
++    if-lt p3, v0, :cond_2
+ 
+-    :cond_0
+-    move p0, v0
++    iget-object p0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mLock:Ljava/lang/Object;
+ 
+-    :goto_0
+-    invoke-static {v2, p0}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite(Ljava/lang/String;I)Z
++    monitor-enter p0
+ 
+-    move-result p0
++    :try_start_0
++    new-instance v0, Ljava/io/File;
+ 
+-    if-eqz p0, :cond_2
++    const-string v1, "/sys/class/mdnie/mdnie/whiteRGB"
+ 
+-    if-eqz p2, :cond_1
++    invoke-direct {v0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+ 
+-    goto :goto_1
++    invoke-virtual {v0}, Ljava/io/File;->exists()Z
+ 
+-    :cond_1
+-    move p1, v0
++    move-result v0
+ 
+-    :goto_1
+-    invoke-static {v1, p1}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite(Ljava/lang/String;I)Z
++    if-eqz v0, :cond_0
+ 
+-    move-result p0
++    new-instance v0, Ljava/lang/StringBuilder;
+ 
+-    if-eqz p0, :cond_2
++    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    const/4 v0, 0x1
++    invoke-static {p1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+ 
+-    :cond_2
+-    return v0
++    move-result-object v1
+ 
+-    :cond_3
+-    if-eqz p2, :cond_4
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    goto :goto_2
++    const-string v1, " "
+ 
+-    :cond_4
+-    move p1, v0
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    :goto_2
+-    invoke-static {v2, p1}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite(Ljava/lang/String;I)Z
++    invoke-static {p2}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+ 
+-    move-result p0
++    move-result-object v1
+ 
+-    return p0
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    :cond_5
+-    const-string p0, "/sys/class/backlight/panel/weakness_hbm_comp"
++    const-string v1, " "
+ 
+-    invoke-static {p0, p2}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite(Ljava/lang/String;I)Z
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    move-result p0
++    invoke-static {p3}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+ 
+-    return p0
++    move-result-object v1
+ 
+-    :cond_6
+-    return v0
+-.end method
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-.method public setmDNIeColorBlind(Z[I)Z
+-    .locals 5
++    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+-    iget-object v0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mContext:Landroid/content/Context;
++    move-result-object v0
+ 
+-    const-string v1, "com.samsung.android.permission.CHANGE_DISPLAY_COLOR"
++    const-string v1, "/sys/class/mdnie/mdnie/whiteRGB"
+ 
+-    const-string/jumbo v2, "setmDNIeColorBlind"
++    invoke-static {v1, v0}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWriteSting(Ljava/lang/String;Ljava/lang/String;)Z
+ 
+-    invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
++    :cond_0
++    new-instance v0, Ljava/io/File;
+ 
+-    new-instance v0, Ljava/lang/StringBuilder;
++    const-string v1, "/sys/class/mdnie/mdnie1/whiteRGB"
+ 
+-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
++    invoke-direct {v0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+ 
+-    const-string/jumbo v1, "setmDNIeColorBlind ("
++    invoke-virtual {v0}, Ljava/io/File;->exists()Z
+ 
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    move-result v0
+ 
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
++    if-eqz v0, :cond_1
+ 
+-    const-string v1, ")"
++    new-instance v0, Ljava/lang/StringBuilder;
+ 
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++    invoke-static {p1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+ 
+-    move-result-object v0
++    move-result-object p1
+ 
+-    const-string v1, "SemMdnieManagerService"
++    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
++    const-string p1, " "
+ 
+-    iget-boolean v0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mCurtainModeIsRunning:Z
++    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    const/4 v1, 0x0
++    invoke-static {p2}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+ 
+-    if-nez v0, :cond_b
++    move-result-object p1
+ 
+-    iget p0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->WEAKNESS_SOLUTION_FUNCTION:I
++    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    const/4 v0, 0x1
++    const-string p1, " "
+ 
+-    const-string v2, "/sys/class/mdnie/mdnie/accessibility"
++    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    const-string v3, "/sys/class/mdnie/mdnie1/accessibility"
++    invoke-static {p3}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
+ 
+-    if-lez p0, :cond_5
++    move-result-object p1
+ 
+-    new-instance p0, Ljava/io/File;
++    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    invoke-direct {p0, v3}, Ljava/io/File;-><init>(Ljava/lang/String;)V
++    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+-    invoke-virtual {p0}, Ljava/io/File;->exists()Z
++    move-result-object p1
+ 
+-    move-result p0
++    const-string p2, "/sys/class/mdnie/mdnie1/whiteRGB"
+ 
+-    const/4 v4, 0x6
++    invoke-static {p2, p1}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWriteSting(Ljava/lang/String;Ljava/lang/String;)Z
+ 
+-    if-eqz p0, :cond_3
++    :cond_1
++    monitor-exit p0
+ 
+-    if-eqz p1, :cond_0
++    const/4 p0, 0x1
+ 
+-    move p0, v4
++    return p0
+ 
+-    goto :goto_0
++    :catchall_0
++    move-exception p1
+ 
+-    :cond_0
+-    move p0, v1
++    monitor-exit p0
++    :try_end_0
++    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+ 
+-    :goto_0
+-    invoke-static {v2, p0, p2}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite_CB_HBM(Ljava/lang/String;I[I)Z
++    throw p1
+ 
+-    move-result p0
++    :cond_2
++    const/4 p0, 0x0
+ 
+-    if-eqz p0, :cond_2
++    return p0
++.end method
+ 
+-    if-eqz p1, :cond_1
++.method public setmDNIeAccessibilityMode(IZ)Z
++    .locals 2
+ 
+-    goto :goto_1
++    iget-object p0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mContext:Landroid/content/Context;
+ 
+-    :cond_1
+-    move v4, v1
++    const-string v0, "com.samsung.android.permission.CHANGE_DISPLAY_COLOR"
+ 
+-    :goto_1
+-    invoke-static {v3, v4, p2}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite_CB_HBM(Ljava/lang/String;I[I)Z
++    const-string/jumbo v1, "setmDNIeAccessibilityMode"
+ 
+-    move-result p0
++    invoke-virtual {p0, v0, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    if-eqz p0, :cond_2
++    new-instance p0, Ljava/lang/StringBuilder;
+ 
+-    move v1, v0
++    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    :cond_2
+-    return v1
++    const-string/jumbo v0, "setmDNIeAccessibilityMode("
+ 
+-    :cond_3
+-    if-eqz p1, :cond_4
++    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    move v1, v4
++    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+ 
+-    :cond_4
+-    invoke-static {v2, v1, p2}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite_CB_HBM(Ljava/lang/String;I[I)Z
++    const-string p1, ", "
+ 
+-    move-result p0
++    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    return p0
++    invoke-virtual {p0, p2}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+ 
+-    :cond_5
+-    new-instance p0, Ljava/io/File;
++    const-string p1, ")"
+ 
+-    invoke-direct {p0, v3}, Ljava/io/File;-><init>(Ljava/lang/String;)V
++    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    invoke-virtual {p0}, Ljava/io/File;->exists()Z
++    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+-    move-result p0
++    move-result-object p0
+ 
+-    const/4 v4, 0x2
++    const-string p1, "SemMdnieManagerService"
+ 
+-    if-eqz p0, :cond_9
++    invoke-static {p1, p0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+ 
+-    if-eqz p1, :cond_6
++    const/4 p0, 0x0
+ 
+-    move p0, v4
++    return p0
++.end method
+ 
+-    goto :goto_2
++.method public setmDNIeColorBlind(Z[I)Z
++    .locals 1
+ 
+-    :cond_6
+-    move p0, v1
++    iget-object p0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mContext:Landroid/content/Context;
+ 
+-    :goto_2
+-    invoke-static {v2, p0, p2}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite_CB(Ljava/lang/String;I[I)Z
++    const-string p2, "com.samsung.android.permission.CHANGE_DISPLAY_COLOR"
+ 
+-    move-result p0
++    const-string/jumbo v0, "setmDNIeColorBlind"
+ 
+-    if-eqz p0, :cond_8
++    invoke-virtual {p0, p2, v0}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    if-eqz p1, :cond_7
++    new-instance p0, Ljava/lang/StringBuilder;
+ 
+-    goto :goto_3
++    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    :cond_7
+-    move v4, v1
++    const-string/jumbo p2, "setmDNIeColorBlind ("
+ 
+-    :goto_3
+-    invoke-static {v3, v4, p2}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite_CB(Ljava/lang/String;I[I)Z
++    invoke-virtual {p0, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    move-result p0
++    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+ 
+-    if-eqz p0, :cond_8
++    const-string p1, ")"
+ 
+-    move v1, v0
++    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    :cond_8
+-    return v1
++    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+-    :cond_9
+-    if-eqz p1, :cond_a
++    move-result-object p0
+ 
+-    move v1, v4
++    const-string p1, "SemMdnieManagerService"
+ 
+-    :cond_a
+-    invoke-static {v2, v1, p2}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite_CB(Ljava/lang/String;I[I)Z
++    invoke-static {p1, p0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+ 
+-    move-result p0
++    const/4 p0, 0x0
+ 
+     return p0
+-
+-    :cond_b
+-    return v1
+ .end method
+ 
+ .method public setmDNIeEmergencyMode(Z)Z
+@@ -6209,84 +5555,41 @@
+ .end method
+ 
+ .method public setmDNIeNegative(Z)Z
+-    .locals 3
+-
+-    iget-object v0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mContext:Landroid/content/Context;
+-
+-    const-string v1, "com.samsung.android.permission.CHANGE_DISPLAY_COLOR"
+-
+-    const-string/jumbo v2, "setmDNIeNegative"
+-
+-    invoke-virtual {v0, v1, v2}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+-
+-    new-instance v0, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+-
+-    const-string/jumbo v1, "setmDNIeNegative ("
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+-
+-    const-string v1, ")"
+-
+-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    const-string v1, "SemMdnieManagerService"
+-
+-    invoke-static {v1, v0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    iget-boolean p0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mCurtainModeIsRunning:Z
+-
+-    const/4 v0, 0x0
+-
+-    if-nez p0, :cond_2
+-
+-    new-instance p0, Ljava/io/File;
++    .locals 2
+ 
+-    const-string v1, "/sys/class/mdnie/mdnie1/accessibility"
++    iget-object p0, p0, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->mContext:Landroid/content/Context;
+ 
+-    invoke-direct {p0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
++    const-string v0, "com.samsung.android.permission.CHANGE_DISPLAY_COLOR"
+ 
+-    invoke-virtual {p0}, Ljava/io/File;->exists()Z
++    const-string/jumbo v1, "setmDNIeNegative"
+ 
+-    move-result p0
++    invoke-virtual {p0, v0, v1}, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    const-string v2, "/sys/class/mdnie/mdnie/accessibility"
++    new-instance p0, Ljava/lang/StringBuilder;
+ 
+-    if-eqz p0, :cond_1
++    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
+ 
+-    invoke-static {v2, p1}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite(Ljava/lang/String;I)Z
++    const-string/jumbo v0, "setmDNIeNegative ("
+ 
+-    move-result p0
++    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    if-eqz p0, :cond_0
++    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+ 
+-    invoke-static {v1, p1}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite(Ljava/lang/String;I)Z
++    const-string p1, ")"
+ 
+-    move-result p0
++    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    if-eqz p0, :cond_0
++    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+ 
+-    const/4 v0, 0x1
++    move-result-object p0
+ 
+-    :cond_0
+-    return v0
++    const-string p1, "SemMdnieManagerService"
+ 
+-    :cond_1
+-    invoke-static {v2, p1}, Lcom/samsung/android/hardware/display/SemMdnieManagerService;->sysfsWrite(Ljava/lang/String;I)Z
++    invoke-static {p1, p0}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+ 
+-    move-result p0
++    const/4 p0, 0x0
+ 
+     return p0
+-
+-    :cond_2
+-    return v0
+ .end method
+ 
+ .method public setmDNIeScreenCurtain(Z)Z
+diff --git a/smali_classes2/com/samsung/android/knox/custom/KnoxCustomManagerService.smali b/smali_classes2/com/samsung/android/knox/custom/KnoxCustomManagerService.smali
+index a2cbffa2..6243174f 100644
+--- a/smali_classes2/com/samsung/android/knox/custom/KnoxCustomManagerService.smali
++++ b/smali_classes2/com/samsung/android/knox/custom/KnoxCustomManagerService.smali
+@@ -51961,215 +51961,27 @@
+ .end method
+ 
+ .method public final setScreenCurtainDirect()I
+-    .locals 9
++    .locals 1
+ 
+     iget-boolean v0, p0, Lcom/samsung/android/knox/custom/KnoxCustomManagerService;->mKnoxCustomCurtainModeIsRunning:Z
+ 
+-    const/4 v1, 0x1
+-
+-    xor-int/2addr v0, v1
++    xor-int/lit8 v0, v0, 0x1
+ 
+     iput-boolean v0, p0, Lcom/samsung/android/knox/custom/KnoxCustomManagerService;->mKnoxCustomCurtainModeIsRunning:Z
+ 
+-    iget-object v0, p0, Lcom/samsung/android/knox/custom/KnoxCustomManagerService;->mContext:Landroid/content/Context;
+-
+-    const-string v2, "mDNIe"
+-
+-    invoke-virtual {v0, v2}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+-
+-    move-result-object v0
+-
+-    check-cast v0, Lcom/samsung/android/hardware/display/SemMdnieManager;
+-
+-    iget-boolean v2, p0, Lcom/samsung/android/knox/custom/KnoxCustomManagerService;->mKnoxCustomCurtainModeIsRunning:Z
+-
+-    const/4 v3, 0x0
+-
+-    if-eqz v2, :cond_0
+-
+-    invoke-virtual {v0, v2}, Lcom/samsung/android/hardware/display/SemMdnieManager;->setmDNIeScreenCurtain(Z)Z
+-
+-    goto/16 :goto_4
+-
+-    :cond_0
+-    iget-object v2, p0, Lcom/samsung/android/knox/custom/KnoxCustomManagerService;->mContext:Landroid/content/Context;
+-
+-    invoke-virtual {v2}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object v2
+-
+-    const-string v4, "high_contrast"
+-
+-    const/4 v5, -0x2
+-
+-    invoke-static {v2, v4, v3, v5}, Landroid/provider/Settings$System;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result v2
+-
+-    if-ne v2, v1, :cond_1
+-
+-    move v2, v1
+-
+-    goto :goto_0
+-
+-    :cond_1
+-    move v2, v3
+-
+-    :goto_0
+-    iget-object v4, p0, Lcom/samsung/android/knox/custom/KnoxCustomManagerService;->mContext:Landroid/content/Context;
+-
+-    invoke-virtual {v4}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object v4
+-
+-    const-string v6, "color_blind"
+-
+-    invoke-static {v4, v6, v3, v5}, Landroid/provider/Settings$System;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result v4
+-
+-    if-ne v4, v1, :cond_2
+-
+-    move v4, v1
+-
+-    goto :goto_1
+-
+-    :cond_2
+-    move v4, v3
+-
+-    :goto_1
+-    iget-object v6, p0, Lcom/samsung/android/knox/custom/KnoxCustomManagerService;->mContext:Landroid/content/Context;
+-
+-    invoke-virtual {v6}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object v6
+-
+-    const-string v7, "greyscale_mode"
+-
+-    invoke-static {v6, v7, v3, v5}, Landroid/provider/Settings$System;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result v6
+-
+-    if-ne v6, v1, :cond_3
+-
+-    move v6, v1
+-
+-    goto :goto_2
+-
+-    :cond_3
+-    move v6, v3
+-
+-    :goto_2
+-    iget-object v7, p0, Lcom/samsung/android/knox/custom/KnoxCustomManagerService;->mContext:Landroid/content/Context;
+-
+-    invoke-virtual {v7}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+-
+-    move-result-object v7
+-
+-    const-string/jumbo v8, "powersaving_switch"
+-
+-    invoke-static {v7, v8, v3, v5}, Landroid/provider/Settings$System;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+-
+-    move-result v5
+-
+-    if-ne v5, v1, :cond_4
+-
+-    move v5, v1
+-
+-    goto :goto_3
+-
+-    :cond_4
+-    move v5, v3
+-
+-    :goto_3
+-    if-eqz v2, :cond_5
+-
+-    if-eqz v6, :cond_5
+-
+-    const/4 p0, 0x5
+-
+-    invoke-virtual {v0, p0, v1}, Lcom/samsung/android/hardware/display/SemMdnieManager;->setmDNIeAccessibilityMode(IZ)Z
+-
+-    goto :goto_4
+-
+-    :cond_5
+-    if-eqz v5, :cond_6
+-
+-    const/16 p0, 0x9
+-
+-    :try_start_0
+-    new-array p0, p0, [I
+-
+-    fill-array-data p0, :array_0
+-
+-    invoke-virtual {v0, v1, p0}, Lcom/samsung/android/hardware/display/SemMdnieManager;->setmDNIeColorBlind(Z[I)Z
+-    :try_end_0
+-    .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
+-
+-    goto :goto_4
+-
+-    :catch_0
+-    move-exception p0
+-
+-    invoke-virtual {p0}, Ljava/lang/Exception;->printStackTrace()V
+-
+-    goto :goto_4
+-
+-    :cond_6
+-    if-eqz v6, :cond_7
+-
+-    const/4 p0, 0x4
+-
+-    invoke-virtual {v0, p0, v1}, Lcom/samsung/android/hardware/display/SemMdnieManager;->setmDNIeAccessibilityMode(IZ)Z
+-
+-    goto :goto_4
+-
+-    :cond_7
+-    if-eqz v2, :cond_8
+-
+-    invoke-virtual {v0, v1}, Lcom/samsung/android/hardware/display/SemMdnieManager;->setmDNIeNegative(Z)Z
+-
+-    goto :goto_4
+-
+-    :cond_8
+-    if-eqz v4, :cond_9
+-
+-    new-instance v0, Landroid/content/Intent;
+-
+-    const-string v1, "com.samsung.android.app.colorblind.ACTION_COLORBLIND_SWITCH_ON"
+-
+-    invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+-
+     iget-object p0, p0, Lcom/samsung/android/knox/custom/KnoxCustomManagerService;->mContext:Landroid/content/Context;
+ 
+-    sget-object v1, Landroid/os/UserHandle;->ALL:Landroid/os/UserHandle;
+-
+-    invoke-virtual {p0, v0, v1}, Landroid/content/Context;->sendBroadcastAsUser(Landroid/content/Intent;Landroid/os/UserHandle;)V
+-
+-    goto :goto_4
++    const-string v0, "mDNIe"
+ 
+-    :cond_9
+-    iget-boolean p0, p0, Lcom/samsung/android/knox/custom/KnoxCustomManagerService;->mKnoxCustomCurtainModeIsRunning:Z
++    invoke-virtual {p0, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+ 
+-    invoke-virtual {v0, p0}, Lcom/samsung/android/hardware/display/SemMdnieManager;->setmDNIeScreenCurtain(Z)Z
++    move-result-object p0
+ 
+-    :goto_4
+-    return v3
++    check-cast p0, Lcom/samsung/android/hardware/display/SemMdnieManager;
+ 
+-    nop
++    const/4 p0, -0x6
+ 
+-    :array_0
+-    .array-data 4
+-        0x4cb3
+-        0x4cb3
+-        0x4cb3
+-        0x9669
+-        0x9669
+-        0x9669
+-        0x1de2
+-        0x1de2
+-        0x1de2
+-    .end array-data
++    return p0
+ .end method
+ 
+ .method public setScreenOffOnHomeLongPressState(Z)I
+-- 
+2.43.0
+
