@@ -1,0 +1,4 @@
+id=adb
+name=Debug USB
+author=BlackMesa123, AgentFabulous
+description=Enables ADB on boot.
