@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="config_adaptive_display_solution_enabled">true</bool>
+    <bool name="config_all_around_sensing_enabled">false</bool>
+    <bool name="config_big_data_logging_enabled">false</bool>
+    <bool name="config_dynamic_automatic_brightness_available">true</bool>
+    <bool name="config_eye_comfort_solution_enabled">false</bool>
+    <bool name="config_mdnie_scenario_control_enabled">true</bool>
+    <bool name="config_showNavigationBar">true</bool>
+    <bool name="config_supportAudioSourceUnprocessed">false</bool>
+</resources>
