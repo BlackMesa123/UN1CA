@@ -8,6 +8,8 @@
     <dimen name="cover_clear_view_left">16.0dip</dimen>
     <dimen name="cover_clear_view_right">344.0dip</dimen>
     <dimen name="cover_clear_view_top">34.0dip</dimen>
+    <dimen name="rounded_corner_radius_bottom">27.0dip</dimen>
+    <dimen name="rounded_corner_radius_top">27.0dip</dimen>
     <dimen name="status_bar_camera_side_padding">36.0px</dimen>
     <dimen name="status_bar_camera_top_margin">17.0px</dimen>
     <dimen name="status_bar_height_portrait">91.0px</dimen>
